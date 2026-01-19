@@ -1,1 +1,68 @@
-# his-afp
+# HIS AFP Management System
+Un sistema completo per la gestione del triage e dell'accesso al pronto soccorso. Questo progetto verrà usato come base per il l'Unità Formativa 15 (Sviluppo Frontend) e Unità Formativa 14 (Architettura Applicativa) del corso di Alta Formazione Professionale dell'istituto G.Marconi di Rovereto.
+
+# Panoramica del Progetto
+Il sistema simula il flusso di lavoro di un Pronto Soccorso, consentendo la gestione dei pazienti dall'ammissione alla dimissione.
+Il progetto è suddiviso in due aree di competenza tecnica:
+* **UF15 (Sviluppo Frontend):** Sviluppo di una SPA responsive con **Angular**.
+* **UF14 (Architettura Applicativa):** Containerizzazione, orchestrazione e configurazione di rete con **Docker** e **NGINX**.
+
+# Cosa troverete già pronto nel progetto
+* **Backend:** Server applicativo con **Node.js** ed **Express** per gestire le API e la logica di business.
+* **Database:** Database relazionale PostgreSQL per la memorizzazione dei dati dei pazienti e delle operazioni di triage.
+
+# Cosa dovrete sviluppare
+* **Frontend (UF15):** Sviluppo di una Single Page Application (SPA) con **Angular** per l'interfaccia utente.
+* **Containerizzazione (UF14):** 
+    * Creazione di Dockerfile, configurazione di Docker Compose e NGINX per il deploy dell'applicazione.
+    * Impostazione del monitoraggio e logging dei container.
+    * Test e documentazione del sistema.
+
+# Struttura del Progetto
+Di seguito la struttura logica del repository e il ruolo delle cartelle principali.
+- `backend/`: Server applicativo JavaScript. Espone le API per triage, gestione pazienti e accesso al DB.
+- `db/`: Script SQL per schema e dati di esempio `init.sql`.
+- `docs/`: Documentazione aggiuntiva, diagrammi e note architetturali. 
+```
+his-afp
+├── backend
+│   ├── api_request
+│   │   ├── Auth.http
+│   │   ├── CodiciColori.http
+│   │   ├── getAdmissions.http
+│   │   └── HealthCheck.http
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
+├── db
+│   └── init.sql
+├── docker-compose.yml
+├── docs
+│   ├── API.md
+│   └── DATABASE.md
+├── LICENSE
+└── README.md
+```
+
+# Requisiti
+- Docker e Docker Compose
+- Node.js e npm (per sviluppo locale) 
+- Programma per accesso al DB PostgreSQL (es. pgAdmin, DBeaver)
+- Programma per testare API REST (es. Postman, Insomnia)
+
+# Utilizzo del repository
+1. Eseguire in fork del progetto su GitHub
+2. Clonare il repository: `git clone <url-del-repo>`
+3. Spostarsi nella cartella del progetto: `cd his-afp`
+4. Creare un nuovo branch per le modifiche: `git checkout -b uf15-2026/nome-cognome`
+5. Avviare i container Docker: `docker-compose up -d --build`
+6. Accedere al backend API su `http://localhost:3000`
+
+# Contribuire
+- Aprire issue per bug o feature
+- Creare branch per la feature: `git checkout -b feat/nome-feature`
+- Inviare pull request con descrizione e test
+
+# Licenza
+Aggiungere qui il tipo di licenza (es. MIT) e inserire il file `LICENSE` nel repository.
