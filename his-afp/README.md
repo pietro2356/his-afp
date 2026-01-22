@@ -1,59 +1,43 @@
 # HisAfp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.1.
+## 1. Installare PrimeNG
 
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
+```shell
+npm install primeng @primeuix/themes
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 2. Installare Prettier
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```shell
+npm install --save-dev prettier
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 3. Configurare Prettier
 
-```bash
-ng generate --help
+Creare un file `.prettierrc` nella radice del progetto con il seguente contenuto:
+
+```json
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "semi": true,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "trailingComma": "none",
+  "printWidth": 100,
+  "htmlWhitespaceSensitivity": "ignore",
+  "endOfLine": "auto"
+}
 ```
 
-## Building
+## 4. Aggiungere script di formattazione a `package.json`
 
-To build the project run:
+Aggiungere i seguenti script alla sezione `scripts` del file `package.json`:
 
-```bash
-ng build
+```json
+"scripts": {
+"format": "prettier --write \"src/**/*.{ts,html,css,scss,json}\"",
+"format:check": "prettier --check \"src/**/*.{ts,html,css,scss,json}\""
+}
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
