@@ -50,8 +50,6 @@ Gli errori sono gestiti centralmente e restituiscono sempre un JSON strutturato.
 L'autenticazione è gestita tramite **JWT (JSON Web Token)**.
 > Il token ha una validità di **1 ora**.
 
-TODO: Implementare refresh token.
-
 **Header Richiesto (per rotte protette):**
 `Authorization: Bearer <tuo_token_jwt>`
 
