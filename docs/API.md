@@ -55,7 +55,7 @@ TODO: Implementare refresh token.
 **Header Richiesto (per rotte protette):**
 `Authorization: Bearer <tuo_token_jwt>`
 
-### Login
+### 🔐 Login
 Ottiene il token di sessione.
 
 * **Endpoint:** `POST /auth/login`
@@ -220,7 +220,7 @@ Recupera il singolo accesso per ID.
 * **Endpoint:** `GET /admissions/:id`
 * **Errori:** `404 Not Found` se l'ID non esiste.
 
-### ➕ 4.2 Nuovo Accesso (Triage)
+### ➕ 4.3 Nuovo Accesso (Triage)
 Registra un nuovo paziente e crea un accesso. 
 Se il paziente esiste già (check su Codice Fiscale), aggiorna i dati anagrafici.
 
@@ -254,7 +254,7 @@ Se il paziente esiste già (check su Codice Fiscale), aggiorna i dati anagrafici
 }
 ```
 
-### 🔄 4.3 Cambio Stato
+### 🔄 4.4 Cambio Stato
 Aggiorna lo stato di avanzamento del paziente.
 
 * **Endpoint:** `PATCH /admissions/:id/status`
