@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import client from 'prom-client';
 import responseTime from "response-time";
 import {authenticateTokenFn, loginFn} from "./services/auth.js";
 import {retrieveHealthStatusFn} from "./services/health.js";

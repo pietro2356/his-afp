@@ -5,9 +5,8 @@ import {AppError, catchAsync} from "../utils/errorHandler.js";
  * GET /admissions
  * Recupera accessi attivi con JOIN sulle tabelle di lookup.
  */
-export const retrieveActiveAdmissionsFn = async (req, res) => {
-	try {
-		const query = `
+export const retrieveActiveAdmissionsFn = catchAsync(async (req, res) => {
+	const query = `
             SELECT
                 a.id,
                 a.braccialetto,
@@ -43,16 +42,10 @@ export const retrieveActiveAdmissionsFn = async (req, res) => {
             ORDER BY tc.priority, a.data_ora_ingresso DESC
 		`;
 
-		const result = await pool.query(query);
+	const result = await pool.query(query);
 
-		// Opzionale: Se vuoi strutturare il JSON a nido (nested), puoi farlo qui.
-		// Altrimenti restituiamo l'oggetto piatto che è ottimo per le Table/Griglie Frontend.
-		res.json(result.rows);
-
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
-};
+	res.json(result.rows);
+});
 
 /**
  * GET /admissions/:id
@@ -89,89 +82,72 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
  * POST /admissions
  * Crea un nuovo accesso. Gestisce Paziente e Admission in transazione.
  */
-export const insertNewAdmissionFn = async (req, res) => {
+export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	const {
 		nome, cognome, dataNascita, codiceFiscale, // Dati Paziente
 		patologiaCode, codiceColore, modalitaArrivoCode, noteTriage // Dati Accesso (Notare i suffix 'Code')
 	} = req.body;
 
 	const client = await pool.connect();
-	try {
-		await client.query('BEGIN');
 
-		// 1. Upsert Paziente
-		let patientRes = await client.query(
-			`INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale)
+	await client.query('BEGIN');
+
+	// 1. Upsert Paziente
+	let patientRes = await client.query(
+		`INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale)
              VALUES ($1, $2, $3, $4)
              ON CONFLICT (codice_fiscale) DO UPDATE SET 
                 nome = EXCLUDED.nome, 
                 cognome = EXCLUDED.cognome 
              RETURNING id`,
-			[nome, cognome, dataNascita, codiceFiscale]
-		);
-		const patientId = patientRes.rows[0].id;
+		[nome, cognome, dataNascita, codiceFiscale]
+	);
+	const patientId = patientRes.rows[0].id;
 
-		// 2. Generazione Braccialetto
-		const year = new Date().getFullYear();
-		const countRes = await client.query(`SELECT COUNT(*) FROM admissions WHERE braccialetto LIKE $1`, [`${year}-%`]);
-		const nextNum = Number.parseInt(countRes.rows[0].count) + 1;
-		const braccialetto = `${year}-${String(nextNum).padStart(4, '0')}`;
+	// 2. Generazione Braccialetto
+	const year = new Date().getFullYear();
+	const countRes = await client.query(`SELECT COUNT(*) FROM admissions WHERE braccialetto LIKE $1`, [`${year}-%`]);
+	const nextNum = Number.parseInt(countRes.rows[0].count) + 1;
+	const braccialetto = `${year}-${String(nextNum).padStart(4, '0')}`;
 
-		// 3. Insert Accesso
-		const insertQuery = `
+	// 3. Insert Accesso
+	const insertQuery = `
             INSERT INTO admissions 
             (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code, note_triage)
             VALUES ($1, $2, 'ATT', $3, $4, $5, $6)
             RETURNING id, braccialetto
         `;
 
-		const insertAdm = await client.query(insertQuery, [
-			patientId, braccialetto, patologiaCode, codiceColore, modalitaArrivoCode, noteTriage
-		]);
+	const insertAdm = await client.query(insertQuery, [
+		patientId, braccialetto, patologiaCode, codiceColore, modalitaArrivoCode, noteTriage
+	]);
 
-		await client.query('COMMIT');
+	await client.query('COMMIT');
 
-		// Restituisco l'ID creato così il frontend può navigare al dettaglio
-		res.status(201).json({
-			id: insertAdm.rows[0].id,
-			braccialetto: insertAdm.rows[0].braccialetto,
-			message: "Accesso creato con successo"
-		});
-
-	} catch (err) {
-		await client.query('ROLLBACK');
-		console.error("Errore inserimento:", err);
-		// Gestione errore Foreign Key (es. Codice Patologia errato)
-		if (err.code === '23503') {
-			return res.status(400).json({ error: "Codice Patologia, Colore o Modalità non valido." });
-		}
-		res.status(500).json({ error: err.message });
-	} finally {
-		client.release();
-	}
-};
+	// Restituisco l'ID creato così il frontend può navigare al dettaglio
+	res.status(201).json({
+		id: insertAdm.rows[0].id,
+		braccialetto: insertAdm.rows[0].braccialetto,
+		message: "Accesso creato con successo"
+	});
+});
 
 /**
  * PATCH /admissions/:id/status
  */
-export const changeAdmissionsStatusByIDFn = async (req, res) => {
+export const changeAdmissionsStatusByIDFn = catchAsync(async (req, res) => {
 	const { id } = req.params;
 	const { nuovoStato } = req.body; // Es. 'VIS', 'DIM'
 
 	// Validazione semplice
 	const allowed = ['ATT', 'VIS', 'OBI', 'RIC', 'DIM'];
 	if (!allowed.includes(nuovoStato)) {
-		return res.status(400).json({ error: "Stato non valido" });
+		return new AppError("Stato non valido fornito", 400);
 	}
-
-	try {
-		const result = await pool.query(
-			`UPDATE admissions SET stato = $1, updated_at = NOW() WHERE id = $2 RETURNING id, stato`,
-			[nuovoStato, id]
-		);
-		if (result.rows.length === 0) return res.status(404).json({ error: "Accesso non trovato" });
-		res.json(result.rows[0]);
-	} catch (err) {
-		res.status(500).json({ error: err.message });
-	}
-};
+	const result = await pool.query(
+		`UPDATE admissions SET stato = $1, updated_at = NOW() WHERE id = $2 RETURNING id, stato`,
+		[nuovoStato, id]
+	);
+	if (result.rows.length === 0) return new AppError("Accesso non trovato con questo ID", 404);
+	res.json(result.rows[0]);
+});
