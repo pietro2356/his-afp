@@ -1,1 +1,24 @@
-<p>dashboard works!</p>
+<div class="p-4">
+  <h1 class="text-3xl font-bold mb-4 text-gray-800">
+    🚑 Triage Dashboard
+    <span class="text-sm font-normal text-gray-500 ml-2">
+      ({{ activeCount() }} in attesa)
+    </span>
+  </h1>
+
+  <div class="grid grid-cols-1 gap-4">
+    @for (pz of admissions(); track pz.id) {
+      <div class="col-start-1 col-end-2">
+        <app-patient-card
+          (processAction)="removePatient($event)"
+          [admission]="pz"
+        />
+      </div>
+    } @empty {
+      <div class="col-12 text-center p-5 text-gray-500">
+        <i class="pi pi-check-circle text-5xl mb-2"></i>
+        <p>Nessun paziente in attesa. Buon caffè!</p>
+      </div>
+    }
+  </div>
+</div>

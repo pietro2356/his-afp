@@ -1,4 +1,4 @@
-export type TriageColor = 'ROSSO' | 'GIALLO' | 'VERDE' | 'BIANCO';
+export type TriageColor = 'ROSSO' | 'ARANCIONE' | 'AZZURRO' | 'VERDE' | 'BIANCO';
 
 export interface Admission {
   id: number;

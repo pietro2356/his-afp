@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
-import {providePrimeNG} from 'primeng/config';
+import { providePrimeNG } from 'primeng/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -10,8 +10,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     providePrimeNG({
       theme: {
-        preset: Aura
-      }
-    })
-  ]
+        preset: Aura,
+        options: {
+          ripple: true,
+          darkModeSelector: '.my-app-dark',
+        },
+      },
+    }),
+  ],
 };

@@ -24,8 +24,26 @@ export const MOCK_ADMISSIONS: Admission[] = [
     patientName: 'Anna',
     patientSurname: 'Bianchi',
     age: 8,
-    triageColor: 'GIALLO',
+    triageColor: 'ARANCIONE',
     triageNote: 'Febbre alta (39.5) e convulsioni.',
     arrivalTime: new Date(Date.now() - 1800000).toISOString(), // 30 min fa
+  },
+  {
+    id: 104,
+    patientName: 'Carla',
+    patientSurname: 'Neri',
+    age: 55,
+    triageColor: 'AZZURRO',
+    triageNote: 'Lieve taglio al dito, necessita punti di sutura.',
+    arrivalTime: new Date(Date.now() - 7200000).toISOString(), // 2 ore fa
+  },
+  {
+    id: 105,
+    patientName: 'Paolo',
+    patientSurname: 'Gialli',
+    age: 40,
+    triageColor: 'BIANCO',
+    triageNote: 'Controllo pressione alta, nessun sintomo acuto.',
+    arrivalTime: new Date(Date.now() - 5400000).toISOString(), // 1.5 ore fa
   },
 ];
