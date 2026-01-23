@@ -36,8 +36,8 @@ Creare un file `.prettierrc` nella radice del progetto con il seguente contenuto
 Aggiungere i seguenti script alla sezione `scripts` del file `package.json`:
 
 ```json
-"scripts": {
-"format": "prettier --write \"src/**/*.{ts,html,css,scss,json}\"",
-"format:check": "prettier --check \"src/**/*.{ts,html,css,scss,json}\""
+{
+  "format": "prettier --write \"src/**/*.{ts,html,css,scss,json}\"",
+  "format:check": "prettier --check \"src/**/*.{ts,html,css,scss,json}\""
 }
 ```
