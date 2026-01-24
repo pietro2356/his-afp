@@ -1,7 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
-import { Admission } from '../../core/models/admission.model';
-import { MOCK_ADMISSIONS } from './dashboard.mock';
-import { PatientCard } from '../../ui/patient-card/patient-card';
+import {Component, inject} from '@angular/core';
+import {PatientCard} from '../../ui/patient-card/patient-card';
+import {AdmissionsService} from '../../core/services/admissions/admissions.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,19 +9,15 @@ import { PatientCard } from '../../ui/patient-card/patient-card';
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
-  // Lo Stato locale gestito con Signal
-  // Inizializzato con i dati mock
-  admissions = signal<Admission[]>(MOCK_ADMISSIONS);
+  // 1. INJECTION: Chiediamo ad Angular l'istanza del servizio
+  readonly #admissionsService = inject(AdmissionsService);
 
-  // Errato: non si aggiorna quando cambia admissions
-  // Perché è una Signal "statica" inizializzata una volta sola
-  // activeCount = signal<number>(this.admissions().length);
-
-  // Corretto: si aggiorna automaticamente quando cambia admissions
-  // Perché computed "ascolta" le Signal usate al suo interno
-  activeCount = computed(() => this.admissions().length);
+  // 2. EXPOSE: Esponiamo i segnali del servizio al template
+  // Non serve ridefinire signal locali! Colleghiamo direttamente.
+  activeCount = this.#admissionsService.activeCounter;
+  admissions = this.#admissionsService.admissions;
 
   removePatient(admissionId: number) {
-    this.admissions.update((currentList) => currentList.filter((adm) => adm.id !== admissionId));
+    this.#admissionsService.dischargePatient(admissionId);
   }
 }
