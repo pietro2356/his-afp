@@ -72,5 +72,18 @@
         }
       }
     }
+  },
+  "schematics": {
+    "@schematics/angular:service": {
+      "type": "service",
+      "flat": false,
+      "skipTests": false
+    },
+    "@schematics/angular:component": {
+      "style": "scss",
+      "skipTests": false,
+      "flat": false,
+      "changeDetection": "OnPush"
+    }
   }
 }
