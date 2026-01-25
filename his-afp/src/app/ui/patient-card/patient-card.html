@@ -1,13 +1,17 @@
 <p-card
   [class]="priorityClass()"
-  [header]="fullName()"
+  [header]="fullName() + ' - ' + admission().braccialetto"
   [subheader]="'Età: ' + admission().age + ' anni' "
+  class="w-full max-w-md mb-4 min-w-md"
 >
   <ng-template #header>
     <div [style.background-color]="priorityClass()" class="h-1rem w-full"></div>
   </ng-template>
 
   <div class="flex flex-col gap-2">
+    <div class="font-bold">
+      Patologia: {{ admission().patologiaCode }}
+    </div>
     <div class="font-bold">
       Codice: {{ admission().triageColor }}
     </div>
