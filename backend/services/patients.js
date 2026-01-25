@@ -7,40 +7,40 @@ import {AppError, catchAsync} from "../utils/errorHandler.js";
  */
 export const retrieveActiveAdmissionsFn = catchAsync(async (req, res) => {
 	const query = `
-            SELECT
-                a.id,
-                a.braccialetto,
-                a.data_ora_ingresso AS "dataOraIngresso",
-                a.stato,
-                a.note_triage AS "noteTriage",
+        SELECT a.id,
+               a.braccialetto,
+               a.data_ora_ingresso AS "dataOraIngresso",
+               a.stato,
+               a.note_triage       AS "noteTriage",
+               a.patologia_code    AS "patologiaCode",
 
-                -- Oggetto Paziente appiattito o strutturato (qui uso prefissi per chiarezza)
-                p.nome,
-                p.cognome,
-                p.data_nascita AS "dataNascita",
-                p.codice_fiscale AS "codiceFiscale",
+               -- Oggetto Paziente appiattito o strutturato (qui uso prefissi per chiarezza)
+               p.nome,
+               p.cognome,
+               p.data_nascita      AS "dataNascita",
+               p.codice_fiscale    AS "codiceFiscale",
 
-                -- Dati Patologia
-                path.code AS "patologiaCode",
-                path.description AS "patologiaDescrizione",
+               -- Dati Patologia
+               path.code           AS "patologiaCode",
+               path.description    AS "patologiaDescrizione",
 
-                -- Dati Colore
-                tc.code AS "coloreCode",
-                tc.hex_value AS "coloreHex",
-                tc.display_name AS "coloreNome",
+               -- Dati Colore
+               tc.code             AS "coloreCode",
+               tc.hex_value        AS "coloreHex",
+               tc.display_name     AS "coloreNome",
 
-                -- Dati Modalità Arrivo
-                am.code AS "modalitaArrivoCode",
-                am.description AS "modalitaArrivoDescrizione"
+               -- Dati Modalità Arrivo
+               am.code             AS "modalitaArrivoCode",
+               am.description      AS "modalitaArrivoDescrizione"
 
-            FROM admissions a
-                     JOIN patients p ON a.patient_id = p.id
-                     LEFT JOIN triage_colors tc ON a.codice_colore = tc.code
-                     LEFT JOIN pathologies path ON a.patologia_code = path.code
-                     LEFT JOIN arrival_modes am ON a.modalita_arrivo_code = am.code
-            WHERE a.stato NOT IN ('DIM', 'RIC')
-            ORDER BY tc.priority, a.data_ora_ingresso DESC
-		`;
+        FROM admissions a
+                 JOIN patients p ON a.patient_id = p.id
+                 LEFT JOIN triage_colors tc ON a.codice_colore = tc.code
+                 LEFT JOIN pathologies path ON a.patologia_code = path.code
+                 LEFT JOIN arrival_modes am ON a.modalita_arrivo_code = am.code
+        WHERE a.stato NOT IN ('DIM', 'RIC')
+        ORDER BY tc.priority, a.data_ora_ingresso DESC
+	`;
 
 	const result = await pool.query(query);
 
@@ -55,28 +55,38 @@ export const retrieveActiveAdmissionsFn = catchAsync(async (req, res) => {
  * GET /admissions/:id
  */
 export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
-	const { id } = req.params;
+	const {id} = req.params;
 	const query = `
-		SELECT
-			a.id,
-			a.braccialetto,
-			a.data_ora_ingresso AS "dataOraIngresso",
-			a.stato,
-			a.note_triage AS "noteTriage",
-			p.nome, p.cognome, p.data_nascita AS "dataNascita", p.codice_fiscale AS "codiceFiscale",
-			path.code AS "patologiaCode", path.description AS "patologiaDescrizione",
-			tc.code AS "coloreCode", tc.hex_value AS "coloreHex", tc.display_name AS "coloreNome",
-			am.code AS "modalitaArrivoCode", am.description AS "modalitaArrivoDescrizione"
-		FROM admissions a
-				 JOIN patients p ON a.patient_id = p.id
-				 LEFT JOIN triage_colors tc ON a.codice_colore = tc.code
-				 LEFT JOIN pathologies path ON a.patologia_code = path.code
-				 LEFT JOIN arrival_modes am ON a.modalita_arrivo_code = am.code
-		WHERE a.id = $1
+        SELECT a.id,
+               a.braccialetto,
+               a.data_ora_ingresso AS "dataOraIngresso",
+               a.stato,
+               a.note_triage       AS "noteTriage",
+               p.nome,
+               p.cognome,
+               p.data_nascita      AS "dataNascita",
+               p.codice_fiscale    AS "codiceFiscale",
+               p.indirizzo_via     as "indirizzoVia",
+               p.indirizzo_civico  AS "indirizzoCivico",
+               p.comune,
+               p.provincia,
+               path.code           AS "patologiaCode",
+               path.description    AS "patologiaDescrizione",
+               tc.code             AS "coloreCode",
+               tc.hex_value        AS "coloreHex",
+               tc.display_name     AS "coloreNome",
+               am.code             AS "modalitaArrivoCode",
+               am.description      AS "modalitaArrivoDescrizione"
+        FROM admissions a
+                 JOIN patients p ON a.patient_id = p.id
+                 LEFT JOIN triage_colors tc ON a.codice_colore = tc.code
+                 LEFT JOIN pathologies path ON a.patologia_code = path.code
+                 LEFT JOIN arrival_modes am ON a.modalita_arrivo_code = am.code
+        WHERE a.id = $1
 	`;
 
 	const result = await pool.query(query, [id]);
-	if (result.rows.length === 0){
+	if (result.rows.length === 0) {
 		return next(new AppError("Accesso non trovato con questo ID", 404));
 	}
 
@@ -103,28 +113,29 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	// 1. Upsert Paziente
 	let patientRes = await client.query(
 		`INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale)
-             VALUES ($1, $2, $3, $4)
-             ON CONFLICT (codice_fiscale) DO UPDATE SET 
-                nome = EXCLUDED.nome, 
-                cognome = EXCLUDED.cognome 
-             RETURNING id`,
+         VALUES ($1, $2, $3, $4)
+         ON CONFLICT (codice_fiscale) DO UPDATE SET nome    = EXCLUDED.nome,
+                                                    cognome = EXCLUDED.cognome
+         RETURNING id`,
 		[nome, cognome, dataNascita, codiceFiscale]
 	);
 	const patientId = patientRes.rows[0].id;
 
 	// 2. Generazione Braccialetto
 	const year = new Date().getFullYear();
-	const countRes = await client.query(`SELECT COUNT(*) FROM admissions WHERE braccialetto LIKE $1`, [`${year}-%`]);
+	const countRes = await client.query(`SELECT COUNT(*)
+                                         FROM admissions
+                                         WHERE braccialetto LIKE $1`, [`${year}-%`]);
 	const nextNum = Number.parseInt(countRes.rows[0].count) + 1;
 	const braccialetto = `${year}-${String(nextNum).padStart(4, '0')}`;
 
 	// 3. Insert Accesso
 	const insertQuery = `
-            INSERT INTO admissions 
-            (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code, note_triage)
-            VALUES ($1, $2, 'ATT', $3, $4, $5, $6)
-            RETURNING id, braccialetto
-        `;
+        INSERT INTO admissions
+        (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code, note_triage)
+        VALUES ($1, $2, 'ATT', $3, $4, $5, $6)
+        RETURNING id, braccialetto
+	`;
 
 	const insertAdm = await client.query(insertQuery, [
 		patientId, braccialetto, patologiaCode, codiceColore, modalitaArrivoCode, noteTriage
@@ -147,8 +158,8 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
  * PATCH /admissions/:id/status
  */
 export const changeAdmissionsStatusByIDFn = catchAsync(async (req, res, next) => {
-	const { id } = req.params;
-	const { nuovoStato } = req.body; // Es. 'VIS', 'DIM'
+	const {id} = req.params;
+	const {nuovoStato} = req.body; // Es. 'VIS', 'DIM'
 
 	// Validazione semplice
 	const allowed = ['ATT', 'VIS', 'OBI', 'RIC', 'DIM'];
@@ -156,7 +167,11 @@ export const changeAdmissionsStatusByIDFn = catchAsync(async (req, res, next) =>
 		return next(new AppError("Stato non valido fornito", 400));
 	}
 	const result = await pool.query(
-		`UPDATE admissions SET stato = $1, updated_at = NOW() WHERE id = $2 RETURNING id, stato`,
+		`UPDATE admissions
+         SET stato      = $1,
+             updated_at = NOW()
+         WHERE id = $2
+         RETURNING id, stato`,
 		[nuovoStato, id]
 	);
 
