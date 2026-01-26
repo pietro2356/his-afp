@@ -2,6 +2,7 @@ import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 import { routes } from './app.routes';
 
