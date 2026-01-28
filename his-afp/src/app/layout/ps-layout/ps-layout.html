@@ -2,17 +2,17 @@
   class="flex flex-row items-center shadow-md backdrop-opacity-5"
 >
   <!-- Logo -->
-  <div class="flex items-center justify-center p-1">
-    <img alt="logo" class="w-20" src="logo-asuit.svg"/>
+  <div class="flex items-center justify-center p-3">
+    <img alt="logo" class="w-40" src="logo-asuit.svg"/>
   </div>
 
   <!-- divider verticale -->
   <div class="border-l h-10 mx-1"></div>
 
   <!-- Azienda -->
-  <div class="pl-0.5">
-    <h1 class="text-xl font-bold">Ospadale di Arco</h1>
-    <p class="text-sm">Pronto Soccorso</p>
+  <div class="pl-1">
+    <h1 class="text-4xl font-bold text-primary">Pronto Soccorso</h1>
+    <p class="text-md text-gray-700 dark:text-gray-300">Ospedale di Arco</p>
   </div>
 
   <!-- Bottone cambio tema in fondo alla header -->
@@ -23,8 +23,10 @@
       [rounded]="true"
       [text]="true"
       aria-label="Change Theme"
+      class="text-4xl"
       icon="pi pi-sun"
       severity="secondary"
+      size="large"
     />
   </div>
 </header>

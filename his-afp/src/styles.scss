@@ -1,9 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
-@use "tailwindcss";
+@use "./tailwind.config.css";
 @use "primeicons/primeicons.css";
+//@use "tailwindcss-primeui";
 
-//body {
-//  font-family: var(--font-family), sans-serif;
-//  margin: 0;
-//  background-color: #f8f9fa;
+//@use "tailwindcss/preflight";
+
+//@tailwind utilities;
+//
+///* 1. CLINICAL LIGHT (Default) */
+//:root {
+//  --p-primary-500: #0EA5E9; // Sky-500
+//  --p-primary-contrast: #FFFFFF; // White
+//
+//  /* Surface colors */
+//  --surface-ground: #f8fafc; /* Slate-50 */
+//  --surface-card: #ffffff;
+//  --text-color: #0f172a; /* Slate-900 */
+//  --text-color-secondary: #64748b;
+//
+//  /* Borders & Shadows */
+//  --border-color: #e2e8f0;
+//  --app-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 //}
+//
+///* 2. RADIOLOGY DARK (Dark Mode) */
+///* Usiamo la classe 'dark' che Tailwind riconosce nativamente */
+//.my-app-dark {
+//  /* Colori desaturati per evitare affaticamento occhi al buio */
+//  --p-primary-500: #ff006e;
+//  --p-primary-contrast: #0f172a;
+//
+//  /* Sfondo non nero puro (#000) ma grigio scuro (#121212 o Slate-900) */
+//  --surface-ground: #0f172a;
+//  --surface-card: #1e293b;
+//  --text-color: #e2e8f0;
+//  --text-color-secondary: #94a3b8;
+//
+//  --border-color: #334155;
+//  --app-shadow: none; /* Le ombre non si vedono bene al buio */
+//}
+//
+///* 3. HIGH CONTRAST (Accessibility Mode) */
+//.high-contrast {
+//  /* Giallo su Nero o Bianco su Nero - Massimo contrasto */
+//  --p-primary-500: #ffff00; /* Giallo puro */
+//  --p-primary-contrast: #000000;
+//
+//  --surface-ground: #000000;
+//  --surface-card: #000000;
+//  --text-color: #ffffff;
+//  --text-color-secondary: #ffff00; /* Anche i testi secondari devono spiccare */
+//
+//  /* I bordi diventano spessi e bianchi */
+//  --border-color: #ffffff;
+//  --app-shadow: none;
+//}
+//
+//
