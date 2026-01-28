@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
-import {PatientCard} from '../../ui/patient-card/patient-card';
-import {AdmissionsService} from '../../core/services/admissions/admissions.service';
+import { Component, inject } from '@angular/core';
+import { PatientCard } from '../../ui/patient-card/patient-card';
+import { AdmissionsService } from '../../core/services/admissions/admissions.service';
 
 @Component({
   selector: 'app-dashboard',

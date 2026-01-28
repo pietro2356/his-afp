@@ -1,0 +1,34 @@
+<header
+  class="flex flex-row items-center shadow-md backdrop-opacity-5"
+>
+  <!-- Logo -->
+  <div class="flex items-center justify-center p-1">
+    <img alt="logo" class="w-20" src="logo-asuit.svg"/>
+  </div>
+
+  <!-- divider verticale -->
+  <div class="border-l h-10 mx-1"></div>
+
+  <!-- Azienda -->
+  <div class="pl-0.5">
+    <h1 class="text-xl font-bold">Ospadale di Arco</h1>
+    <p class="text-sm">Pronto Soccorso</p>
+  </div>
+
+  <!-- Bottone cambio tema in fondo alla header -->
+  <div class="ml-auto mr-4">
+    <p-button
+      (onClick)="toggleDarkMode()"
+      [outlined]="false"
+      [rounded]="true"
+      [text]="true"
+      aria-label="Change Theme"
+      icon="pi pi-sun"
+      severity="secondary"
+    />
+  </div>
+</header>
+
+<body>
+<router-outlet/>
+</body>

@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { PsLayout } from './layout/ps-layout/ps-layout';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [PsLayout],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
