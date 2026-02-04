@@ -1,2 +1,21 @@
-<his-card-pz/>
-<his-card-pz/>
+<!--<his-card-pz/>-->
+<!--<his-card-pz/>-->
+
+<!-- UL > LI-->
+<ul>
+  @for (nome of listaNomi(); track $index) {
+    <li>{{ nome }}</li>
+  } @empty {
+    <li>Nessun nome presente</li>
+  }
+</ul>
+
+<ul>
+  @for (pz of listaPz(); track pz.id) {
+    <his-card-pz
+      [paziente]="pz"
+    />
+  } @empty {
+    <li>Nessun paziente disponibile</li>
+  }
+</ul>
