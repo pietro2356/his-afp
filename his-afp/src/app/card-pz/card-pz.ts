@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
-import { DatePipe } from '@angular/common';
+import { Button } from 'primeng/button';
 
 interface Paziente {
   id: string;
@@ -16,7 +16,7 @@ interface Paziente {
 
 @Component({
   selector: 'his-card-pz',
-  imports: [CardModule, DatePipe],
+  imports: [CardModule, Button],
   templateUrl: './card-pz.html',
   styleUrl: './card-pz.scss',
 })
@@ -29,7 +29,7 @@ export class CardPz {
     eta: 25,
     id: '23',
     nome: 'Pietro',
-    note: 'Trauma lieve alla caviglia',
+    note: "Difficoltà respiratoria con dolore mandibolare irradiato all'arto sup. sx. di 9",
     patologia: 'C19',
     oraArrivo: new Date(Date.now() - 7200000).toISOString(),
   });

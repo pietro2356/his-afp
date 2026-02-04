@@ -1,25 +1,17 @@
 <div class="mb-4 p-8">
-  <p-card class="h-1rem w-full">
-    <ng-template #title>
-      {{ paziente().cognome }} {{ paziente().nome }}
+  <p-card
+    class="w-2xl"
+    header="{{paziente().cognome}} {{paziente().nome}}"
+    subheader="{{paziente().braccialetto}} - {{paziente().codiceColore}}"
+  >
+    <p>
+      <b>{{ paziente().patologia }}</b>
+      <br>
+      Note Triage: {{ paziente().note }}
+    </p>
+
+    <ng-template #footer>
+      <p-button (onClick)='cambiaNome()' label="Cambia Nome"/>
     </ng-template>
-
-    <ng-template #subtitle>
-      {{ paziente().braccialetto }}
-    </ng-template>
-
-    <hr>
-
-    <div class="flex flex-col gap-2">
-      <div class="font-bold">
-        {{ paziente().codiceColore }}
-      </div>
-
-      <p>{{ paziente().note }}</p>
-
-      <small>
-        Arrivo: {{ paziente().oraArrivo | date:'hh:mm dd/mm/yyyy' }}
-      </small>
-    </div>
   </p-card>
 </div>
