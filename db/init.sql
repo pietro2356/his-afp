@@ -138,6 +138,33 @@ INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via
 VALUES ('Luigi', 'Verdi', '1970-12-20', 'LUGVRDA70F234KK3', 'Via Molinari', '23', 'Trento', 'TN')
 ON CONFLICT (codice_fiscale) DO NOTHING;
 
+INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via, indirizzo_civico, comune, provincia)
+VALUES ('Annagrazia', 'Amadini', '1957-09-28', 'MDNNGR57P68G894V', 'Via Monte Amiata', '25', 'Casto', 'BS')
+ON CONFLICT (codice_fiscale) DO NOTHING;
+
+INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via, indirizzo_civico, comune, provincia)
+VALUES ('Fernando', 'Cusano', '1948-03-24', 'CSNFNN48C24G263I', 'Via Napoleone Buonaparte', '19', 'Trenta', 'CS')
+ON CONFLICT (codice_fiscale) DO NOTHING;
+
+INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via, indirizzo_civico, comune, provincia)
+VALUES ('Virginio', 'Canciani', '1966-12-15', 'CNCVGN66T15L211I', 'Via G.Colombo', '206', 'Camaiore', 'LU')
+ON CONFLICT (codice_fiscale) DO NOTHING;
+
+INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via, indirizzo_civico, comune, provincia)
+VALUES ('Zeno', 'Magnin', '2009-08-15', 'MGNZNE09M15B219H', 'Via D.Compagni', '167', 'Valdisotto', 'SO')
+ON CONFLICT (codice_fiscale) DO NOTHING;
+
+INSERT INTO patients (nome, cognome, data_nascita, codice_fiscale, indirizzo_via, indirizzo_civico, comune, provincia)
+VALUES ('Roberta',
+        'Tanini',
+        '1937-05-31',
+        'TNNRRT37E71F415T',
+        'Piazzetta C.Ponte',
+        '74',
+        'Berceto',
+        'PR')
+ON CONFLICT (codice_fiscale) DO NOTHING;
+
 -- Accesso Demo
 INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
                         note_triage)
@@ -163,4 +190,56 @@ SELECT id,
        'Trauma lieve alla caviglia'
 FROM patients
 WHERE codice_fiscale = 'LUGVRDA70F234KK3'
+ON CONFLICT (braccialetto) DO NOTHING;
+
+INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
+                        note_triage)
+SELECT id,
+       TO_CHAR(CURRENT_DATE, 'YYYY') || '-0003',
+       'ATT',
+       'C19',
+       'VERDE',
+       'AUT',
+       'Febbre alta da 3 giorni con tosse secca'
+FROM patients
+WHERE codice_fiscale = 'MDNNGR57P68G894V'
+ON CONFLICT (braccialetto) DO NOTHING;
+
+INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
+                        note_triage)
+SELECT id,
+       TO_CHAR(CURRENT_DATE, 'YYYY') || '-0004',
+       'ATT',
+       'C01',
+       'BIANCO',
+       'AUT',
+       'Contusione al braccio sinistro dopo caduta in casa'
+FROM patients
+WHERE codice_fiscale = 'CSNFNN48C24G263I'
+ON CONFLICT (braccialetto) DO NOTHING;
+
+INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
+                        note_triage)
+SELECT id,
+       TO_CHAR(CURRENT_DATE, 'YYYY') || '-0005',
+       'ATT',
+       'C01',
+       'ROSSO',
+       'ELI',
+       'Trauma cranico grave dopo caduta da altezza'
+FROM patients
+WHERE codice_fiscale = 'CNCVGN66T15L211I'
+ON CONFLICT (braccialetto) DO NOTHING;
+
+INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
+                        note_triage)
+SELECT id,
+       TO_CHAR(CURRENT_DATE, 'YYYY') || '-0006',
+       'ATT',
+       'C05',
+       'ARANCIONE',
+       'AUT',
+       'Crisi epilettica in corso da 10 minuti'
+FROM patients
+WHERE codice_fiscale = 'MGNZNE09M15B219H'
 ON CONFLICT (braccialetto) DO NOTHING;

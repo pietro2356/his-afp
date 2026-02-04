@@ -1,0 +1,56 @@
+<p-table
+  [tableStyle]="{ 'min-width': '100rem' }"
+  [value]="listaPazienti()"
+  groupRowsBy="patologiaCode"
+  rowGroupMode="subheader"
+  sortMode="single"
+  stripedRows
+>
+  <ng-template #header>
+    <tr>
+      <th pSortableColumn="codice_colore.priority">
+        <div class="flex items-center gap-2">
+          Gravità
+          <p-sortIcon field="codice_colore.priority"/>
+        </div>
+      </th>
+      <th pSortableColumn="patologiaCode">Patologia</th>
+      <th>Braccialetto</th>
+      <th pSortableColumn="data_ora_ingresso">
+        <div class="flex items-center gap-2">
+          Ora Ingresso
+          <p-sortIcon field="data_ora_ingresso"/>
+        </div>
+      </th>
+      <th pSortableColumn="cognome">
+        <div class="flex items-center gap-2">
+          Anagrafica
+          <p-sortIcon field="cognome"/>
+        </div>
+      </th>
+      <th>Note triage</th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body [appTableRow]="listaPazienti()" let-pz>
+    <tr>
+      <td>
+        <div class="flex items-center gap-2">
+          <!--          <app-color-box [colorHex]="pz.triageColor"/>-->
+          <b>
+            <span class="w-4 h-4 rounded-full">
+              {{ pz.triageColor }}
+            </span>
+          </b>
+        </div>
+      </td>
+      <td>{{ pz.patologiaCode }}</td>
+      <td>{{ pz.braccialetto }}</td>
+      <td>{{ pz.arrivalTime | date:'hh:mm dd/mm/yyyy' }}</td>
+      <td>
+        {{ pz.patientSurname }} {{ pz.patientName }}
+      </td>
+      <td>{{ pz.triageNote }}</td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -13,16 +13,19 @@
   </h1>
 
   <div class="flex flex-row flex-wrap gap-4">
-    @for (pz of admissions(); track pz.id) {
-      <app-patient-card
-        (processAction)="removePatient($event)"
-        [admission]="pz"
-      />
-    } @empty {
-      <div class="col-12 text-center p-5 text-2xl">
-        <i class="pi pi-check-circle text-5xl mb-2"></i>
-        <p>Nessun paziente in attesa. Buon caffè!</p>
-      </div>
-    }
+    <app-table-pz
+      [listaPazienti]="admissions()"
+    />
+    <!--    @for (pz of admissions(); track pz.id) {-->
+    <!--      <app-patient-card-->
+    <!--        (processAction)="removePatient($event)"-->
+    <!--        [admission]="pz"-->
+    <!--      />-->
+    <!--    } @empty {-->
+    <!--      <div class="col-12 text-center p-5 text-2xl">-->
+    <!--        <i class="pi pi-check-circle text-5xl mb-2"></i>-->
+    <!--        <p>Nessun paziente in attesa. Buon caffè!</p>-->
+    <!--      </div>-->
+    <!--    }-->
   </div>
 </div>

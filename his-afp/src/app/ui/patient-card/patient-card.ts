@@ -28,15 +28,15 @@ export class PatientCard {
   priorityClass = computed(() => {
     switch (this.admission().triageColor) {
       case 'ROSSO':
-        return 'border-l-8 border-red-600';
+        return 'border-l-8 border-red-500';
       case 'ARANCIONE':
-        return 'border-l-8 border-orange-400';
+        return 'border-l-8 border-orange-500';
       case 'AZZURRO':
-        return 'border-l-8 border-blue-500';
+        return 'border-l-8 border-blue-400';
       case 'VERDE':
-        return 'border-l-8 border-green-600';
+        return 'border-l-8 border-green-500';
       case 'BIANCO':
-        return 'border-l-8 border-gray-400';
+        return 'border-l-8 border-gray-500';
       default:
         return '';
     }
