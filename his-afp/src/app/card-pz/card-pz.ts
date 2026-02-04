@@ -10,26 +10,38 @@ import { Paziente } from '../models/Paziente.model';
   styleUrl: './card-pz.scss',
 })
 export class CardPz {
-  nome: string = 'Pietro';
+  colori = ['BIANCO', 'VERDE', 'AZZURRO', 'ARANCIONE', 'ROSSO'];
 
   paziente = input.required<Paziente>();
 
-  // paziente = signal<Paziente>({
-  //   braccialetto: 'PZ254',
-  //   codiceColore: 'ROSSO',
-  //   cognome: 'Rocchio',
-  //   eta: 25,
-  //   id: '23',
-  //   nome: 'Pietro',
-  //   note: "Difficoltà respiratoria con dolore mandibolare irradiato all'arto sup. sx. di 9",
-  //   patologia: 'C19',
-  //   oraArrivo: new Date(Date.now() - 7200000).toISOString(),
-  // });
+  setStatusColor() {
+    switch (this.paziente().codiceColore) {
+      case 'ROSSO':
+        return 'border-l-8 border-red-600';
+      case 'ARANCIONE':
+        return 'border-l-8 border-orange-400';
+      case 'AZZURRO':
+        return 'border-l-8 border-blue-500';
+      case 'VERDE':
+        return 'border-l-8 border-green-600';
+      case 'BIANCO':
+        return 'border-l-8 border-gray-400';
+      default:
+        return '';
+    }
+  }
 
-  cambiaNome() {
-    this.nome = 'Gian';
+  incrementaStato() {
+    const currentIndex = this.colori.indexOf(this.paziente().codiceColore);
+    if (currentIndex < this.colori.length - 1) {
+      this.paziente().codiceColore = this.colori[currentIndex + 1];
+    }
+  }
 
-    // this.paziente = "Lucio";
-    //this.paziente.set('Lucio');
+  decrementaStato() {
+    const currentIndex = this.colori.indexOf(this.paziente().codiceColore);
+    if (currentIndex > 0) {
+      this.paziente().codiceColore = this.colori[currentIndex - 1];
+    }
   }
 }

@@ -1,6 +1,6 @@
-<div class="mb-4 p-8">
+<div class="mb-4 p-4">
   <p-card
-    class="w-2xl"
+    class="w-2xs h-auto {{setStatusColor()}}"
     header="{{paziente().cognome}} {{paziente().nome}}"
     subheader="{{paziente().braccialetto}} - {{paziente().codiceColore}}"
   >
@@ -11,7 +11,8 @@
     </p>
 
     <ng-template #footer>
-      <p-button (onClick)='cambiaNome()' label="Cambia Nome"/>
+      <p-button (onClick)='incrementaStato()' label="Incrementa" severity="danger"/>
+      <p-button (onClick)='decrementaStato()' label="Decrementa" severity="secondary"/>
     </ng-template>
   </p-card>
 </div>
