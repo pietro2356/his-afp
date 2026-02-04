@@ -1,18 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Button } from 'primeng/button';
-
-interface Paziente {
-  id: string;
-  nome: string;
-  cognome: string;
-  braccialetto: string;
-  eta: number;
-  codiceColore: string;
-  note: string;
-  patologia: string;
-  oraArrivo: string;
-}
+import { Paziente } from '../models/Paziente.model';
 
 @Component({
   selector: 'his-card-pz',
