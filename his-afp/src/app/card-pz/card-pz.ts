@@ -1,17 +1,7 @@
 import { Component, input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Button } from 'primeng/button';
-
-export interface Paziente {
-  id: string;
-  nome: string;
-  cognome: string;
-  braccialetto: string;
-  eta: number;
-  codiceColore: string;
-  note: string;
-  patologia: string;
-}
+import { Paziente } from '../core/models/Paziente';
 
 @Component({
   selector: 'his-card-pz',
@@ -38,7 +28,7 @@ export class CardPz {
       case 'VERDE':
         return 'border-green-600';
       case 'BIANCO':
-        return 'border-gray-600';
+        return 'border-gray-300';
       default:
         return '';
     }

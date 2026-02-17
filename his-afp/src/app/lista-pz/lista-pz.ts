@@ -1,11 +1,13 @@
 import {Component, computed, inject, model, signal} from '@angular/core';
-import {CardPz, Paziente} from '../card-pz/card-pz';
+import {CardPz} from '../card-pz/card-pz';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormsModule} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {ButtonModule} from 'primeng/button';
 import {TagModule} from 'primeng/tag';
 import {ApiResponseType, HealthStatus, HealthStatusMock} from '../core/models/Response';
+import {Admission, mapAdmissionToPaziente, Paziente} from '../core/models/Paziente';
+import {map} from 'rxjs';
 
 @Component({
   selector: 'his-lista-pz',
@@ -100,6 +102,34 @@ export class ListaPz {
           default:
             console.error('Unexpected response format:', res);
             break;
+        }
+      });
+  }
+
+  getAdmissionList() {
+    this.#http
+      .get<ApiResponseType<Admission[]>>('http://localhost:3000/admissions')
+      .pipe(
+        map((res) => {
+          if (res.status === 'success') {
+            return res.data.map((admission) => mapAdmissionToPaziente(admission));
+          }
+          throw new Error(`Error fetching admissions: ${res.message} (code: ${res.code})`);
+        }),
+      )
+      .subscribe((data) => {
+        this.listaPz.set(data);
+      });
+  }
+  getAdmissionList2() {
+    this.#http
+      .get<ApiResponseType<Admission[]>>('http://localhost:3000/admissions')
+      .subscribe((data) => {
+        if (data.status === 'success') {
+          const pazienti = data.data.map((admission) => mapAdmissionToPaziente(admission));
+          this.listaPz.update((prev) => [...prev, ...pazienti]);
+        } else {
+          console.error(`Error fetching admissions: ${data.message} (code: ${data.code})`);
         }
       });
   }
