@@ -352,19 +352,16 @@ Caso in cui il servizio è operativo e il database è connesso.
 }
 ```
 
-### **Response (500 Internal Server Error):**
-
 Caso in cui il database è offline o non raggiungibile.
 
 ```json
 {
-  "status": "error",
+  "status": "success",
   "data": {
     "service": "UP",
     "database": "DISCONNECTED",
-    "uptime": 797.26820844
-  },
-  "message": "getaddrinfo EAI_AGAIN db"
+    "uptime": 719.583665512
+  }
 }
 ```
 
