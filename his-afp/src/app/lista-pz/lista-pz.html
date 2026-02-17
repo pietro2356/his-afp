@@ -7,32 +7,31 @@
 <p>Pazienti presenti in PS: {{ filteredList().length }}</p>
 <hr>
 
-@let srv = healthStatus()?.service;
-@let db = healthStatus()?.database;
-@let uptime = healthStatus()?.uptime;
-
-<!-- TODO: Da sistemare-->
-<ul>
+@let srv = healthStatus().service;
+@let db = healthStatus().database;
+@let uptime = healthStatus().uptime;
+<ul class="flex flex-row gap-4 p-4">
   <li>Service:
     <p-tag
-      [severity]="srv == undefined ? 'danger' : 'success'"
-      value="{{ srv || 'KO' }}"
+      [severity]="srv === 'UP' ? 'success' : 'danger'"
+      value="{{ srv }}"
     />
   </li>
   <li>Database:
     <p-tag
-      [severity]="db === 'DISCONNECTED' ? 'danger' : 'success'"
-      value="{{ db || 'KO' }}"
+      [severity]="db === 'CONNECTED' ? 'success' : 'danger'"
+      value="{{ db }}"
     />
   </li>
   <li>Uptime:
     <p-tag
-      [severity]="uptime == undefined ? 'danger' : 'success'"
-      value="{{ uptime || 'KO' }}"
+      [severity]="uptime > -1 ? 'success' : 'danger'"
+      value="{{ uptime }}"
     />
   </li>
 </ul>
 
+<hr>
 <!--
 -   quadrata: Padre -> Figlio
 -   rotonda: Figlio -> Padre
