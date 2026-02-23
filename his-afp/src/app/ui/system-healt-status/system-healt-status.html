@@ -1,0 +1,30 @@
+@let sts = sysHealthStatusSrv.systemHealthStatus();
+
+<ul>
+  <li>Service:
+    <p-tag
+      [severity]="sts.serviceSeverity"
+      value="{{ sts.service }}"
+    />
+  </li>
+  <li>Database:
+    <p-tag
+      [severity]="sts.databaseSeverity"
+      value="{{ sts.database}}"
+    />
+  </li>
+  <li>Uptime:
+    <p-tag
+      [severity]="sts.uptimeSeverity"
+      value="{{ sysHealthStatusSrv.getReadableUptime()}}"
+    />
+  </li>
+</ul>
+
+@if (enableDebugMode()) {
+  <p-button
+    (onClick)="sysHealthStatusSrv.fetchSystemHealthStatus()"
+    label="Check System"
+    severity="warn"
+  ></p-button>
+}
