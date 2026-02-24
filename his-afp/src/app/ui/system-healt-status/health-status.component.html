@@ -27,4 +27,9 @@
     label="Check System"
     severity="warn"
   ></p-button>
+  <p-button
+    (onClick)="sysHealthStatusSrv.fetchSysHealthStsWithHttpResource()"
+    label="Check System httpResource"
+    severity="warn"
+  ></p-button>
 }

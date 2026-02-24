@@ -14,6 +14,6 @@ export class HealthStatus {
   readonly enableDebugMode = input(false, { transform: booleanAttribute });
 
   ngOnInit() {
-    this.sysHealthStatusSrv.fetchSystemHealthStatus();
+    //this.sysHealthStatusSrv.fetchSystemHealthStatus();
   }
 }
