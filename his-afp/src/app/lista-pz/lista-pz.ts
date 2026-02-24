@@ -4,11 +4,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { SystemHealtStatus } from '../ui/system-healt-status/system-healt-status';
+import { HealthStatus } from '../ui/system-healt-status/health-status.component';
 
 @Component({
   selector: 'his-lista-pz',
-  imports: [InputTextModule, FormsModule, ButtonModule, CardPz, TagModule, SystemHealtStatus],
+  imports: [InputTextModule, FormsModule, ButtonModule, CardPz, TagModule, HealthStatus],
   templateUrl: './lista-pz.html',
   styleUrl: './lista-pz.scss',
 })
