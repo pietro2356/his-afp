@@ -19,7 +19,7 @@
   class="flex flex-wrap flex-row gap-4 p-4"
 >
   @for (paziente of filteredList(); track paziente.id) {
-    <his-card-pz [borderTop]="false" [id]="paziente.id" [paziente]="paziente"/>
+    <his-card-pz [borderTop]="false" [paziente]="paziente"/>
     <p-button
       (onClick)="editNomePaziente(paziente.nome)"
       label="edit"

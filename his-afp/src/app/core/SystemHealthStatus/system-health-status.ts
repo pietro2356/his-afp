@@ -7,7 +7,7 @@ import { APIResponse } from '../models/HttpResponse';
   providedIn: 'root',
 })
 export class SystemHealthStatus {
-  sts = httpResource<APIResponse<HealthStatus>>(() => `http://localhost:3000/health`);
+  #sts = httpResource<APIResponse<HealthStatus>>(() => `http://localhost:3000/health`);
   #http = inject(HttpClient);
   #sysHealthStatus = signal<HealthStatus>(HealthStatusMock);
   systemHealthStatus = this.#sysHealthStatus.asReadonly();
@@ -40,7 +40,7 @@ export class SystemHealthStatus {
 
   public fetchSysHealthStsWithHttpResource() {
     console.log('Fetching system health status with httpResource...');
-    this.sts.reload();
+    this.#sts.reload();
   }
 
   public getReadableUptime(): string {
@@ -50,16 +50,16 @@ export class SystemHealthStatus {
 
   private manageHttpResourceCall() {
     console.log('Managing httpResource call for system health status...');
-    if (this.sts.hasValue()) {
-      const res = this.sts.value();
+    if (this.#sts.hasValue()) {
+      const res = this.#sts.value();
       this.#sysHealthStatus.set({
         ...res.data,
         serviceSeverity: this.setSeverityStatus(res.data.service),
         databaseSeverity: this.setSeverityStatus(res.data.database),
         uptimeSeverity: res.data.uptime > 0 ? 'success' : 'danger',
       });
-    } else if (this.sts.error()) {
-      console.error('Error fetching system health status:', this.sts.error()?.message);
+    } else if (this.#sts.error()) {
+      console.error('Error fetching system health status:', this.#sts.error()?.message);
       this.#sysHealthStatus.set(HealthStatusMock);
       this.#sysHealthStatus.set(HealthStatusMock);
     }
