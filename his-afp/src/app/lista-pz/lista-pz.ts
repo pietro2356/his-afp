@@ -1,10 +1,12 @@
-import { Component, computed, model, signal } from '@angular/core';
-import { CardPz, Paziente } from '../card-pz/card-pz';
+import { Component, computed, inject, model } from '@angular/core';
+import { CardPz } from '../card-pz/card-pz';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { HealthStatus } from '../ui/system-healt-status/health-status.component';
+import { Paziente } from '../core/models/Paziente';
+import { PatientManager } from '../core/Patients/patient-manager';
 
 @Component({
   selector: 'his-lista-pz',
@@ -14,63 +16,17 @@ import { HealthStatus } from '../ui/system-healt-status/health-status.component'
 })
 export class ListaPz {
   nomePaziente = model<string>('');
-  listaPz = signal<Paziente[]>([
-    {
-      braccialetto: 'PR234',
-      codiceColore: 'VERDE',
-      cognome: 'Rocchio',
-      eta: 25,
-      id: '23',
-      nome: 'Pietro',
-      note: 'TRauma',
-      patologia: 'C19',
-    },
-    {
-      braccialetto: 'BR0034',
-      codiceColore: 'ARANCIONE',
-      cognome: 'Brazorf',
-      eta: 25,
-      id: '1',
-      nome: 'Ajeje',
-      note: 'TRauma',
-      patologia: 'C19',
-    },
-    {
-      braccialetto: 'LSD',
-      codiceColore: 'ROSSO',
-      cognome: 'Winky',
-      eta: 25,
-      id: '2',
-      nome: 'Tinky',
-      note: 'TRauma',
-      patologia: 'C19',
-    },
-    {
-      braccialetto: 'LSD',
-      codiceColore: 'AZZURRO',
-      cognome: 'Winky',
-      eta: 25,
-      id: '3',
-      nome: 'Tinky',
-      note: 'TRauma',
-      patologia: 'C19',
-    },
-    {
-      braccialetto: 'LSD',
-      codiceColore: 'AZZURRO',
-      cognome: 'Winky',
-      eta: 25,
-      id: '4',
-      nome: 'Tinky',
-      note: 'TRauma',
-      patologia: 'C19',
-    },
-  ]);
+  #patientManager = inject(PatientManager);
+  listaPz = this.#patientManager.listaPZ;
   filteredList = computed(() => {
     return this.listaPz().filter((pz: Paziente) =>
       pz.nome.toLowerCase().includes(this.nomePaziente().toLowerCase()),
     );
   });
+
+  ngOnInit() {
+    this.#patientManager.fetchListaPazienti();
+  }
 
   editNomePaziente(nomePZ: string) {
     this.nomePaziente.set(nomePZ);
