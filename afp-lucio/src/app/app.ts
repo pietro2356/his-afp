@@ -1,12 +1,18 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+//import { RouterOutlet } from '@angular/router';
+// 1. Importa la classe del componente (controlla che il percorso sia corretto)
+import { DarkmodeSelector } from './darkmode-selector/darkmode-selector'; 
+//import { CardPz } from './card-pz/card-pz';
+import { ListaPz } from './lista-pz/lista-pz';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  // 2. Aggiungilo qui nell'array imports
+ imports: [DarkmodeSelector,ListaPz], 
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('afp-lucio');
+export class AppComponent {
+  // ...
 }
