@@ -1,10 +1,10 @@
 import { Component, effect, inject, model } from '@angular/core';
-import { CardPz } from '../ui/card-pz/card-pz';
+import { CardPz } from '../../ui/card-pz/card-pz';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { PatientManager } from '../core/Pazienti/patient-manager';
+import { PatientManager } from '../../core/Pazienti/patient-manager';
 
 @Component({
   selector: 'his-lista-pz',
