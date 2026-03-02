@@ -3,16 +3,8 @@
   pInputText
   type="text"
 >
-<p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
 <p>Pazienti presenti in PS: {{ listaPz().length }}</p>
 <hr>
-
-<his-stato-api/>
-
-<!--
--   quadrata: Padre -> Figlio
--   rotonda: Figlio -> Padre
--->
 <div
   class="flex flex-wrap flex-row gap-4 p-4"
 >
