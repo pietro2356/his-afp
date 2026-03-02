@@ -8,11 +8,6 @@ import { SystemStatus } from '../core/SystemStatus/system-status';
 import { StatoAPI } from '../ui/stato-api/stato-api';
 import { PatientManager } from '../core/Pazienti/patient-manager';
 
-interface Response<T> {
-  status: string;
-  data: T;
-}
-
 @Component({
   selector: 'his-lista-pz',
   imports: [InputTextModule, FormsModule, ButtonModule, CardPz, TagModule, StatoAPI],
