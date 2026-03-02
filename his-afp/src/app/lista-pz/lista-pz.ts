@@ -1,5 +1,5 @@
 import { Component, effect, inject, model } from '@angular/core';
-import { CardPz } from '../card-pz/card-pz';
+import { CardPz } from '../ui/card-pz/card-pz';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
