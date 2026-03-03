@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'lista-pz',
+    path: 'tabella-pz',
     loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
   },
   {
@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'lista-pz',
+    redirectTo: 'tabella-pz',
     pathMatch: 'full',
   },
 ];
