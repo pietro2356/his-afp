@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
 
 @Component({
-  selector: 'his-lista-pz',
+  selector: 'his-tabella-pz',
   imports: [InputTextModule, FormsModule, ButtonModule, CardPz, TagModule],
   templateUrl: './tabella-pz.component.html',
   styleUrl: './tabella-pz.component.scss',
