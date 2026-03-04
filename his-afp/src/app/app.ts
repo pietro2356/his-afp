@@ -1,6 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Button } from 'primeng/button';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +10,11 @@ import { RouterModule } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('his-afp');
+  readonly #router = inject(Router);
+
+  public navigateToPatient() {
+    this.#router.navigate(['/modifica-pz/'], {
+      queryParams: { id: 2 },
+    });
+  }
 }
