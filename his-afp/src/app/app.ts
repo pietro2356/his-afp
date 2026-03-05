@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
-import { Button } from 'primeng/button';
 import { Router, RouterModule } from '@angular/router';
+import { Header } from './ui/header/header';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
-  imports: [Button, RouterModule],
+  imports: [RouterModule, Header, Button],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -14,7 +15,7 @@ export class App {
 
   public navigateToPatient() {
     this.#router.navigate(['/modifica-pz/'], {
-      queryParams: { id: 2 },
+      queryParams: { idd: 2 },
     });
   }
 }

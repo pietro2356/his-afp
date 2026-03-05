@@ -1,0 +1,36 @@
+<header
+  class="flex flex-row items-center shadow-md backdrop-opacity-5"
+>
+  <!-- Azienda -->
+  <div class="pl-1">
+    <h1 class="text-4xl font-bold text-primary">Pronto Soccorso</h1>
+    <p class="text-md text-gray-800 dark:text-gray-400">Ospedale di Arco</p>
+  </div>
+  <!-- divider verticale -->
+  <div class="border-l h-10 mx-1"></div>
+  <nav
+    class="flex flex-row items-center gap-3 pl-4"
+  >
+    <p-button
+      label="Lista"
+      routerLink="/lista-pz"
+      severity="info"
+    />
+    <p-button
+      label="Accettazione"
+      routerLink="/accettazione-pz"
+      severity="info"
+    />
+    <p-button
+      label="Stato"
+      routerLink="/stato-servizi"
+      severity="info"
+    />
+  </nav>
+
+  <!-- Bottone cambio tema in fondo alla header -->
+  <div class="ml-auto mr-4">
+    <his-darckmode-selector/>
+  </div>
+
+</header>
