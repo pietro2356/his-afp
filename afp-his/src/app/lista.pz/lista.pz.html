@@ -1,0 +1,15 @@
+<!--<his-card-pz/>-->
+<!--
+@for(<var> of <array>){
+
+}
+-->
+@for (pz of listaPz(); track pz.braccialetto) {
+                <h1>{{ pz.cognome }} {{ pz.nome }}</h1>
+                <h2>{{ pz.braccialetto }} - {{ pz.patologia }}</h2>
+                <hr>
+              } @empty {
+                <h1>Nessun paziente in attesa</h1>
+              }
+              
+              
