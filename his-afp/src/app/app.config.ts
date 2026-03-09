@@ -1,9 +1,15 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
+import { ThemeManagerV3 } from './core/Theme/theme-manager-v3';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +24,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideAppInitializer(() => inject(ThemeManagerV3).loadThemeFromLocalStorage()),
   ],
 };

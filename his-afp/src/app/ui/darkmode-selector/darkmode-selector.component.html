@@ -1,7 +1,7 @@
 <p-button
-  (onClick)="toggleDarkMode()"
+  (onClick)="themeManager.toggleTheme()"
   [rounded]="true"
   [text]="true"
-  icon="pi pi-sun"
+  icon="pi {{themeManager.icon()}}"
   severity="secondary"
 />

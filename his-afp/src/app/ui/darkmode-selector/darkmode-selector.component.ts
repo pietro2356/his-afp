@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { ThemeManagerV3 } from '../../core/Theme/theme-manager-v3';
 
 @Component({
   selector: 'his-darckmode-selector',
@@ -8,8 +9,8 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './darkmode-selector.component.scss',
 })
 export class DarkmodeSelector {
-  toggleDarkMode() {
-    const element = document.querySelector('html');
-    element?.classList.toggle('my-app-dark');
+  readonly themeManager = inject(ThemeManagerV3);
+  constructor() {
+    //this.themeManager.loadThemeFromLocalStorage();
   }
 }
