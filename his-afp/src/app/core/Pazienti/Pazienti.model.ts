@@ -4,6 +4,7 @@ export interface Paziente {
   cognome: string; // cognome
   braccialetto: string; // braccialetto
   eta: number; // da calcolare con dataNascita
+  sesso: string; // sex
   codiceColore: string; // coloreCode
   note: string; // noteTriage
   patologia: string; // patologiaCode
@@ -20,6 +21,7 @@ export interface PazienteDTO {
   cognome: string;
   dataNascita: string;
   codiceFiscale: string;
+  sex: string;
   patologiaDescrizione: string;
   coloreCode: string;
   coloreHex: string;

@@ -1,9 +1,15 @@
 <div class="mb-4 p-4">
   <p-card
     class="w-2xs {{setBorder()}} {{setColoreDiStato()}}"
-    header="{{paziente().cognome}} {{paziente().nome}}"
+
     subheader="{{paziente().braccialetto}} - {{paziente().codiceColore}}"
   >
+    <ng-template #title>
+      <div class="flex flex-row items-center">
+        {{ paziente().cognome }} {{ paziente().nome }}
+        <span class="{{setSexIcon()}} ml-auto" style="font-size: 1.2rem"></span>
+      </div>
+    </ng-template>
     <p>
       <b>{{ paziente().patologia }}</b>
       <br>

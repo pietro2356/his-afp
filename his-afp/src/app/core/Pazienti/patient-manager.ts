@@ -35,6 +35,7 @@ export class PatientManager {
       cognome: pz.cognome,
       braccialetto: pz.braccialetto,
       codiceColore: pz.coloreCode,
+      sesso: pz.sex,
       note: pz.noteTriage,
       patologia: pz.patologiaCode,
       eta: this.calcolaEta(pz.dataNascita),

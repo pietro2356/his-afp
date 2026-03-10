@@ -24,6 +24,17 @@ export class CardPz {
     });
   }
 
+  setSexIcon() {
+    switch (this.paziente().sesso) {
+      case 'M':
+        return 'pi pi-android';
+      case 'F':
+        return 'pi pi-crown';
+      default:
+        return 'pi pi-asterisk';
+    }
+  }
+
   setBorder() {
     return this.borderTop() ? 'border-t-8' : 'border-b-8';
   }
