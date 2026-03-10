@@ -44,7 +44,7 @@ export class ThemeManagerV3 {
    * Esegue il toggle del tema tra light e dark, applica il nuovo tema al documento e lo salva in localStorage.
    * Il toggle è basato sul tema attualmente attivo, quindi se il tema è light, verrà impostato dark e viceversa.
    */
-  private toggleTheme() {
+  public toggleTheme() {
     const newTheme: ThemeMode = this.#theme().code === 'light' ? 'dark' : 'light';
     this.#theme.set(availTheme[newTheme]);
     this.setTheme(newTheme);

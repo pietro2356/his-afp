@@ -10,7 +10,4 @@ import { ThemeManagerV3 } from '../../core/Theme/theme-manager-v3';
 })
 export class DarkmodeSelector {
   readonly themeManager = inject(ThemeManagerV3);
-  constructor() {
-    //this.themeManager.loadThemeFromLocalStorage();
-  }
 }
