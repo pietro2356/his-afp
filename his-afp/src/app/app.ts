@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { DarkmodeSelector } from './ui/darkmode-selector/darkmode-selector.component';
-import { ListaPz } from './pattern/lista-pz/lista-pz';
+import { RouterModule } from '@angular/router';
+import { Header } from './ui/header/header';
 
 @Component({
   selector: 'app-root',
-  imports: [DarkmodeSelector, ListaPz],
+  imports: [RouterModule, Header],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
