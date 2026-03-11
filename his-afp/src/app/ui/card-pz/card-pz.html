@@ -1,8 +1,6 @@
 <div class="mb-4 p-4">
   <p-card
     class="w-2xs {{setBorder()}} {{setColoreDiStato()}}"
-
-    subheader="{{paziente().braccialetto}} - {{paziente().codiceColore}}"
   >
     <ng-template #title>
       <div class="flex flex-row items-center">
@@ -10,11 +8,23 @@
         <span class="{{setSexIcon()}} ml-auto" style="font-size: 1.2rem"></span>
       </div>
     </ng-template>
+
+    <ng-template #subtitle>
+      <div class="flex flex-row items-center gap-1.5">
+        @if (colorCodeMode() === 'box') {
+          <his-color-box [color]="paziente().codiceColore"/>
+        }
+        <p>
+          {{ paziente().braccialetto }} - {{ paziente().codiceColore }}
+        </p>
+      </div>
+    </ng-template>
     <p>
       <b>{{ paziente().patologia }}</b>
       <br>
       Note Triage: {{ paziente().note }}
     </p>
+
 
     <ng-template #footer>
       <p-button

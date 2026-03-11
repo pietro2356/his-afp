@@ -3,16 +3,18 @@ import { CardModule } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Paziente } from '../../core/Pazienti/Pazienti.model';
 import { Router } from '@angular/router';
+import { ColorBox } from '../color-box/color-box';
 
 @Component({
   selector: 'his-card-pz',
-  imports: [CardModule, Button],
+  imports: [CardModule, Button, ColorBox],
   templateUrl: './card-pz.html',
   styleUrl: './card-pz.scss',
 })
 export class CardPz {
   paziente = input.required<Paziente>();
   borderTop = input.required<boolean>();
+  colorCodeMode = input.required<'border' | 'box'>();
   readonly #router = inject(Router);
 
   public navigateToSchedaPaziente() {
@@ -36,10 +38,12 @@ export class CardPz {
   }
 
   setBorder() {
+    if (this.colorCodeMode() !== 'border') return '';
     return this.borderTop() ? 'border-t-8' : 'border-b-8';
   }
 
   setColoreDiStato() {
+    if (this.colorCodeMode() !== 'border') return '';
     switch (this.paziente().codiceColore) {
       case 'ROSSO':
         return 'border-red-600';
