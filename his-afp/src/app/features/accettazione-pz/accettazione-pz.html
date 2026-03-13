@@ -1,1 +1,91 @@
-<p>accettazione-pz works!</p>
+<form>
+  <div class="p-2">
+    <p class="text-2xl font-bold text-primary pt-4 pl-4">Anagrafica:</p>
+
+    <div class="flex flex-row flex-wrap shadow-md backdrop-opacity-5 rounded-2xl">
+      <his-form-input
+        [checkFn]="checkFormFieldValidity"
+        [formFieldErrors]="pzForm.nome().errors()"
+        [formField]="pzForm.nome"
+        scopo="Nome"
+        type="text"
+      />
+      <his-form-input
+        [checkFn]="checkFormFieldValidity"
+        [formFieldErrors]="pzForm.cognome().errors()"
+        [formField]="pzForm.cognome"
+        scopo="Cognome"
+        type="text"
+      />
+      <his-form-input
+        [checkFn]="checkFormFieldValidity"
+        [formFieldErrors]="pzForm.codiceFiscale().errors()"
+        [formField]="pzForm.codiceFiscale"
+        scopo="Codice Fiscale"
+        type="text"
+      />
+      <!--      <his-form-input-->
+      <!--        [checkFn]="checkFormFieldValidity"-->
+      <!--        [formFieldErrors]="pzForm.dataNascita().errors()"-->
+      <!--        [formField]="pzForm.dataNascita"-->
+      <!--        scopo="Data di Nascita"-->
+      <!--        type="date"-->
+      <!--      />-->
+      <div hisFlexColP>
+        <label for="dataNascita">Data di Nascita</label>
+        <p-date-picker
+          [formField]="$any(pzForm.dataNascita)"
+          id="dataNascita"
+          type="date"
+        />
+        <!--        <input-->
+        <!--          [class.p-invalid]="pzForm.dataNascita().touched() && pzForm.dataNascita().invalid()"-->
+        <!--          [formField]="pzForm.dataNascita"-->
+        <!--          class="p-datepicker"-->
+        <!--          id="dataNascita"-->
+        <!--          type="date"-->
+        <!--        >-->
+        @if (pzForm.dataNascita().touched() && pzForm.dataNascita().invalid()) {
+          <p-message severity="error" size="small" variant="simple">
+            @for (error of pzForm.dataNascita().errors(); track error) {
+              <p>{{ error.message }}</p>
+            }
+          </p-message>
+        }
+        <p>
+          Touched: {{ pzForm.dataNascita().touched() }} <br>
+          Invalid: {{ pzForm.dataNascita().invalid() }} <br>
+          Errors: {{ pzForm.dataNascita().errors() | json }} <br>
+          Dirty: {{ pzForm.dataNascita().dirty() }} <br>
+          Value parsed: {{ pzForm.dataNascita().value() | date:'dd/MM/yyyy' }} <br>
+          Value: {{ pzForm.dataNascita().value() | json }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="p-2">
+    <p class="text-2xl font-bold text-primary pt-4 pl-4">Sanitario:</p>
+
+    <div class="flex flex-row flex-wrap shadow-md backdrop-opacity-5 rounded-2xl">
+      <div hisFlexColP>
+        <label for="patologia">Patologia</label>
+        <p-select [options]="patologie()" id="patologia"/>
+      </div>
+      <div hisFlexColP>
+        <label for="colore">Codice Colore</label>
+        <p-select [options]="codColore()" id="colore"/>
+      </div>
+      <div hisFlexColP>
+        <label for="arrivo">Modalità di Arrivo</label>
+        <p-select [options]="modArrivo()" id="arrivo"/>
+      </div>
+      <div hisFlexColP>
+        <label for="note">Note</label>
+        <textarea cols="60" id="note" pTextarea rows="1"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <p-button (onClick)="save()" [disabled]="!pzForm().valid()" class="m-2" label="Salva"/>
+
+</form>

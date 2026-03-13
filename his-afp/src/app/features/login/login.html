@@ -1,0 +1,49 @@
+<p-card class="w-md p-4">
+  <ng-template #title>
+    <div>Login</div>
+  </ng-template>
+
+  <div>
+    <form>
+      <div class="mb-3 flex flex-col">
+        <label for="username">Username</label>
+        <input
+          [class.p-invalid]="loginForm.username().touched() && loginForm.username().invalid()"
+          [formField]="loginForm.username"
+          id="username"
+          pInputText
+          type="text"
+        />
+        @if (loginForm.username().touched() && loginForm.username().invalid()) {
+          <p-message severity="error" size="small" variant="simple">
+            @for (error of loginForm.username().errors(); track error) {
+              <p>{{ error.message }}</p>
+            }
+          </p-message>
+        }
+      </div>
+      <div class="mb-3 flex flex-col">
+        <label for="password">Password</label>
+        <input
+          [class.p-invalid]="loginForm.password().touched() && loginForm.password().invalid()"
+          [formField]="loginForm.password"
+          id="password"
+          pInputText
+          type="password"
+        />
+        @if (loginForm.password().touched() && loginForm.password().invalid()) {
+          <p-message severity="error" size="small" variant="simple">
+            @for (error of loginForm.password().errors(); track error) {
+              <p>{{ error.message }}</p>
+            }
+          </p-message>
+        }
+      </div>
+      @if (loginForm().dirty()) {
+        <p-message severity="warn" size="small" variant="simple">
+          <p>You have unsaved changed</p>
+        </p-message>
+      }
+    </form>
+  </div>
+</p-card>

@@ -27,3 +27,15 @@ export interface PazienteDTO {
   modalitaArrivoCode: string;
   modalitaArrivoDescrizione: string;
 }
+
+export interface PazienteCreateDTO {
+  nome: string;
+  cognome: string;
+  dataNascita: string;
+  codiceFiscale: string;
+  sex: string;
+  patologiaCode: string;
+  codiceColore: string;
+  modalitaArrivoCode: string;
+  noteTriage: string;
+}
