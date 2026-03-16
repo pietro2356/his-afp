@@ -1,3 +1,5 @@
+<his-form-accettazione/>
+<hr>
 <form>
   <div class="p-2">
     <p class="text-2xl font-bold text-primary pt-4 pl-4">Anagrafica:</p>
@@ -69,15 +71,15 @@
     <div class="flex flex-row flex-wrap shadow-md backdrop-opacity-5 rounded-2xl">
       <div hisFlexColP>
         <label for="patologia">Patologia</label>
-        <p-select [options]="patologie()" id="patologia"/>
+        <p-select [options]="patologie()" id="patologia" optionLabel="description" optionValue="code"/>
       </div>
       <div hisFlexColP>
         <label for="colore">Codice Colore</label>
-        <p-select [options]="codColore()" id="colore"/>
+        <p-select [options]="codColore()" id="colore" optionLabel="displayName" optionValue="code"/>
       </div>
       <div hisFlexColP>
         <label for="arrivo">Modalità di Arrivo</label>
-        <p-select [options]="modArrivo()" id="arrivo"/>
+        <p-select [options]="modArrivo()" id="arrivo" optionLabel="description" optionValue="code"/>
       </div>
       <div hisFlexColP>
         <label for="note">Note</label>

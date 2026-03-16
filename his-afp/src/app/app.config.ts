@@ -10,6 +10,7 @@ import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
 import { PatientManager } from './core/Pazienti/patient-manager';
+import { ResourcesManager } from './core/Resource/resources-manager';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideAppInitializer(() => inject(PatientManager).fetchPazienti()),
-    provideAppInitializer(() => inject(PatientManager).refreshPazienti()),
+    // provideAppInitializer(() => inject(PatientManager).refreshPazienti()),
+    provideAppInitializer(() => inject(ResourcesManager).fetchResources()),
   ],
 };

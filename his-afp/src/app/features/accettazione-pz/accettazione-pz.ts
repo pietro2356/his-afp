@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FlexColP } from '../../core/directive/flex-col-p';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
@@ -9,6 +9,8 @@ import { FormInput } from '../../ui/form-input/form-input';
 import { Message } from 'primeng/message';
 import { DatePicker } from 'primeng/datepicker';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { ResourcesManager } from '../../core/Resource/resources-manager';
+import { FormAccettazione } from '../../ui/form-accettazione/form-accettazione';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -23,16 +25,13 @@ import { DatePipe, JsonPipe } from '@angular/common';
     DatePicker,
     JsonPipe,
     DatePipe,
+    FormAccettazione,
   ],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccettazionePz {
-  patologie = signal<string[]>(['Trauma', 'Cardiopatia', 'Ictus', 'Altro']);
-  codColore = signal(['BIANCO', 'VERDE', 'AZZURRO', 'ARANCIONE', 'ROSSO']);
-  modArrivo = signal<string[]>(['AMBULANZA', 'AUTOMOBILE', 'A PIEDI', 'ALTRO']);
-
   newPZModel = signal<PazienteCreateDTO>({
     codiceColore: '',
     codiceFiscale: '',
@@ -44,7 +43,6 @@ export class AccettazionePz {
     patologiaCode: '',
     sex: '',
   });
-
   pzForm = form(this.newPZModel, (sPath) => {
     required(sPath.nome, { message: 'Il nome è obbligatorio' });
     required(sPath.cognome, { message: 'Il cognome è obbligatorio' });
@@ -60,6 +58,10 @@ export class AccettazionePz {
     required(sPath.codiceColore, { message: 'Il codice colore è obbligatorio' });
     required(sPath.modalitaArrivoCode, { message: 'La modalità di arrivo è obbligatoria' });
   });
+  readonly #ResManager = inject(ResourcesManager);
+  modArrivo = this.#ResManager.arrivalModes;
+  codColore = this.#ResManager.triageColors;
+  patologie = this.#ResManager.pathologies;
 
   public save() {
     console.log(this.pzForm());
