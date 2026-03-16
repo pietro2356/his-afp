@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AbstractControl, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { FlexColP } from '../../core/directive/flex-col-p';
 import { InputTextModule } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
@@ -19,14 +19,16 @@ interface IFormAccettazione {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormAccettazione {
-  paziente = new FormGroup<IFormAccettazione>({
-    nome: new FormControl('', Validators.required),
-    cognome: new FormControl('', Validators.required),
-    address: new FormGroup({
-      via: new FormControl(''),
-      civico: new FormControl(0),
-      comune: new FormControl(''),
-      provincia: new FormControl(''),
+  readonly #formBuilder = inject(FormBuilder);
+
+  paziente = this.#formBuilder.group({
+    nome: [''],
+    cognome: [''],
+    address: this.#formBuilder.group({
+      via: [''],
+      civico: [''],
+      comune: [''],
+      provincia: [''],
     }),
   });
 
