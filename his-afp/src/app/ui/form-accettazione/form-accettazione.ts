@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FlexColP } from '../../core/directive/flex-col-p';
 import { InputTextModule } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
@@ -20,8 +20,8 @@ export class FormAccettazione {
   //nome = new FormControl('');
 
   paziente = new FormGroup<IFormAccettazione>({
-    nome: new FormControl(''),
-    cognome: new FormControl(''),
+    nome: new FormControl('', Validators.required),
+    cognome: new FormControl('', Validators.required),
   });
 
   submitForm() {
