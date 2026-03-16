@@ -2,38 +2,68 @@
   <p class="text-3xl text-pretty">Anagrafica</p>
   <div hisFlexColP>
     <label for="nome">Nome: </label>
-    <input formControlName="nome" id="nome" pInputText>
+    <input formControlName="nome" id="nome" pInputText/>
+    @if (checkFCValidity('nome')) {
+      <p-message severity="error" size="small" variant="simple">
+        <p>Il campo 'nome' è obbligatorio</p>
+      </p-message>
+    }
   </div>
 
   <div hisFlexColP>
     <label for="cognome">Cognome: </label>
-    <input formControlName="cognome" id="cognome" pInputText>
+    <input formControlName="cognome" id="cognome" pInputText/>
+    @if (checkFCValidity('cognome')) {
+      <p-message severity="error" size="small" variant="simple">
+        <p>Il campo 'cognome' è obbligatorio</p>
+      </p-message>
+    }
   </div>
 
-  <hr>
+  <hr/>
   <div formGroupName="address">
     <p class="text-2xl">Indirizzo</p>
     <div hisFlexColP>
       <label for="via">Via: </label>
-      <input formControlName="via" id="via" pInputText>
+      <input formControlName="via" id="via" pInputText/>
+      @if (checkFCValidity('address.via')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'via' è obbligatorio</p>
+        </p-message>
+      }
     </div>
 
     <div hisFlexColP>
       <label for="civico">Civico: </label>
       <p-input-number [min]="0" formControlName="civico" id="civico" prefix="N°"/>
+      @if (checkFCValidity('address.civico')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'civico' è obbligatorio</p>
+        </p-message>
+      }
     </div>
 
     <div hisFlexColP>
       <label for="comune">Comune: </label>
-      <input formControlName="comune" id="comune" pInputText>
+      <input formControlName="comune" id="comune" pInputText/>
+      @if (checkFCValidity('address.comune')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'comune' è obbligatorio</p>
+        </p-message>
+      }
     </div>
 
     <div hisFlexColP>
       <label for="provincia">Provincia: </label>
-      <input formControlName="provincia" id="provincia" pInputText>
+      <input formControlName="provincia" id="provincia" pInputText/>
+      @if (checkFCValidity('address.provincia')) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'provincia' è obbligatorio</p>
+        </p-message>
+      }
     </div>
-
   </div>
+  <p>Form status: {{ paziente.status }}</p>
 
-  <p-button [disabled]="!paziente.valid" label="Submit" type="submit"/>
+  <p-button label="Submit" type="submit"/>
 </form>
