@@ -1,4 +1,18 @@
-<div hisFlexColP>
-  <label for="nome">Nome: {{ nome.value }}</label>
-  <input [formControl]="nome" id="nome" pInputText>
-</div>
+<!--<div hisFlexColP>-->
+<!--  <label for="nome">Nome: {{ nome.value }}</label>-->
+<!--  <input [formControl]="nome" id="nome" pInputText>-->
+<!--</div>-->
+
+<form (ngSubmit)="submitForm()" [formGroup]="paziente">
+  <div hisFlexColP>
+    <label for="nome">Nome: </label>
+    <input formControlName="nome" id="nome" pInputText>
+  </div>
+
+  <div hisFlexColP>
+    <label for="cognome">Cognome: </label>
+    <input formControlName="cognome" id="cognome" pInputText>
+  </div>
+
+  <p-button [disabled]="!paziente.valid" label="Submit" type="submit"/>
+</form>
