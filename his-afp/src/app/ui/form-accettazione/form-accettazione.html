@@ -1,9 +1,5 @@
-<!--<div hisFlexColP>-->
-<!--  <label for="nome">Nome: {{ nome.value }}</label>-->
-<!--  <input [formControl]="nome" id="nome" pInputText>-->
-<!--</div>-->
-
 <form (ngSubmit)="submitForm()" [formGroup]="paziente">
+  <p class="text-3xl text-pretty">Anagrafica</p>
   <div hisFlexColP>
     <label for="nome">Nome: </label>
     <input formControlName="nome" id="nome" pInputText>
@@ -12,6 +8,31 @@
   <div hisFlexColP>
     <label for="cognome">Cognome: </label>
     <input formControlName="cognome" id="cognome" pInputText>
+  </div>
+
+  <hr>
+  <div formGroupName="address">
+    <p class="text-2xl">Indirizzo</p>
+    <div hisFlexColP>
+      <label for="via">Via: </label>
+      <input formControlName="via" id="via" pInputText>
+    </div>
+
+    <div hisFlexColP>
+      <label for="civico">Civico: </label>
+      <p-input-number [min]="0" formControlName="civico" id="civico" prefix="N°"/>
+    </div>
+
+    <div hisFlexColP>
+      <label for="comune">Comune: </label>
+      <input formControlName="comune" id="comune" pInputText>
+    </div>
+
+    <div hisFlexColP>
+      <label for="provincia">Provincia: </label>
+      <input formControlName="provincia" id="provincia" pInputText>
+    </div>
+
   </div>
 
   <p-button [disabled]="!paziente.valid" label="Submit" type="submit"/>
