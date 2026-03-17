@@ -29,6 +29,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/login/login').then((m) => m.Login),
   },
   {
+    path: 'lecture',
+    loadComponent: () => import('./ui/form-lecture/form-lecture').then((m) => m.FormLecture),
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',

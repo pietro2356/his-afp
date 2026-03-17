@@ -1,0 +1,55 @@
+<div class="flex flex-col p-4">
+  <label for="nome">Nome: {{ nome.value }}</label>
+  <input
+    [formControl]="nome"
+    [invalid]="isFieldInvalid()"
+    class="w-2xs"
+    id="nome"
+    pInputText
+  >
+  @if (isFieldInvalid()) {
+    @if (nome.errors?.['required']) {
+      <p-message severity="error" size="small" variant="simple">
+        <p>Il campo 'nome' è obbligatorio</p>
+      </p-message>
+    }
+    @if (nome.errors?.['minlength']) {
+      <p-message severity="error" size="small" variant="simple">
+        <p>Il campo 'nome' deve essere lungo almeno {{ nome.errors?.['minlength'].requiredLength }} caratteri</p>
+      </p-message>
+    }
+  }
+</div>
+<hr>
+<p>
+  Valido:
+  @if (nome.valid) {
+    <p-tag severity="success" value="true - Valid"/>
+  } @else {
+    <p-tag severity="danger" value="false - Invalid"/>
+  }
+</p>
+<div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
+<p>
+  Modificato:
+  @if (nome.dirty) {
+    <p-tag severity="success" value="true - Dirty"/>
+  } @else {
+    <p-tag severity="danger" value="false - Pristine"/>
+  }
+</p>
+<div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
+<p>
+  Toccato:
+  @if (nome.touched) {
+    <p-tag severity="success" value="true - Touched"/>
+  } @else {
+    <p-tag severity="danger" value="false - Untouched"/>
+  }
+<div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
+<p>Pending:
+  <p-tag
+    [severity]="nome.pending ? 'success' : 'danger'"
+    value="{{ nome.pending }}"
+  />
+</p>
