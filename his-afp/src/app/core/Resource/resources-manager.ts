@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { ArrivalMode, Pathology, TriageColor } from './Resource.models';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class ResourcesManager {
 
   private fetchTriageColors() {
     this.#http
-      .get<APIResponse<TriageColor[]>>('http://localhost:3000/resources/triage-colors')
+      .get<APIResponse<TriageColor[]>>(`${environment.apiUrl}/resources/triage-colors`)
       .subscribe({
         next: (response) => {
           this.#triageColors.set(response.data.sort((a, b) => a.priority - b.priority));
@@ -38,7 +39,7 @@ export class ResourcesManager {
 
   private fetchPathologies() {
     this.#http
-      .get<APIResponse<Pathology[]>>('http://localhost:3000/resources/pathologies')
+      .get<APIResponse<Pathology[]>>(`${environment.apiUrl}/resources/pathologies`)
       .subscribe({
         next: (response) => {
           this.#pathologies.set(response.data);
@@ -51,7 +52,7 @@ export class ResourcesManager {
 
   private fetchArrivalModes() {
     this.#http
-      .get<APIResponse<ArrivalMode[]>>('http://localhost:3000/resources/arrival-modes')
+      .get<APIResponse<ArrivalMode[]>>(`${environment.apiUrl}/resources/arrival-modes`)
       .subscribe({
         next: (response) => {
           this.#arrivalModes.set(response.data);

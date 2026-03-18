@@ -1,29 +1,32 @@
-<div class="flex flex-col p-4">
-  <label for="nome">Nome: {{ nome.value }}</label>
-  <input
-    [formControl]="nome"
-    [invalid]="isFieldInvalid()"
-    class="w-2xs"
-    id="nome"
-    pInputText
-  >
-  @if (isFieldInvalid()) {
-    @if (nome.errors?.['required']) {
-      <p-message severity="error" size="small" variant="simple">
-        <p>Il campo 'nome' è obbligatorio</p>
-      </p-message>
+<form [formGroup]="user">
+  <div class="flex flex-col p-4">
+    <label for="nome">Nome: {{ getFieldValue('nome') }}</label>
+    <input
+      [invalid]="isFieldInvalid('nome')"
+      class="w-2xs"
+      formControlName="nome"
+      id="nome"
+      pInputText
+    >
+    @if (isFieldInvalid('nome')) {
+      @if (getFieldErrors('nome')?.['required']) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'nome' è obbligatorio</p>
+        </p-message>
+      }
+      @if (getFieldErrors('nome')?.['minlength']) {
+        <p-message severity="error" size="small" variant="simple">
+          <p>Il campo 'nome' deve essere lungo almeno {{ getFieldErrors('nome')?.['minlength'].requiredLength }}
+            caratteri</p>
+        </p-message>
+      }
     }
-    @if (nome.errors?.['minlength']) {
-      <p-message severity="error" size="small" variant="simple">
-        <p>Il campo 'nome' deve essere lungo almeno {{ nome.errors?.['minlength'].requiredLength }} caratteri</p>
-      </p-message>
-    }
-  }
-</div>
+  </div>
+</form>
 <hr>
 <p>
   Valido:
-  @if (nome.valid) {
+  @if (getField('nome')?.valid) {
     <p-tag severity="success" value="true - Valid"/>
   } @else {
     <p-tag severity="danger" value="false - Invalid"/>
@@ -32,7 +35,7 @@
 <div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
 <p>
   Modificato:
-  @if (nome.dirty) {
+  @if (getField('nome')?.dirty) {
     <p-tag severity="success" value="true - Dirty"/>
   } @else {
     <p-tag severity="danger" value="false - Pristine"/>
@@ -41,7 +44,7 @@
 <div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
 <p>
   Toccato:
-  @if (nome.touched) {
+  @if (getField('nome')?.touched) {
     <p-tag severity="success" value="true - Touched"/>
   } @else {
     <p-tag severity="danger" value="false - Untouched"/>
@@ -49,7 +52,7 @@
 <div class="border-b-amber-950 w-60 border-b-2 pb-0.5"></div>
 <p>Pending:
   <p-tag
-    [severity]="nome.pending ? 'success' : 'danger'"
-    value="{{ nome.pending }}"
+    [severity]="getField('nome')?.pending ? 'success' : 'danger'"
+    value="{{getField('nome')?.pending ? 'true - Pending' : 'false - Not pending'}}"
   />
 </p>
