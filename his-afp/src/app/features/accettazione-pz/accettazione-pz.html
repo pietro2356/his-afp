@@ -1,5 +1,5 @@
 <form [formGroup]="paziente">
-  
+
   <fieldset formGroupName="anagrafica">
     <legend>Dati anagrafici</legend>
     <div class="flex flex-col p-4">
@@ -67,7 +67,26 @@
         id="colore"
         optionLabel="displayName"
         optionValue="code"
-      />
+      >
+        <ng-template #selectedItem let-color>
+          <div class="flex items-center gap-2">
+            <span
+              [style.background-color]="color.hexValue"
+              class="inline-block size-5 h-5 rounded-md"
+            ></span>
+            {{ color.displayName }}
+          </div>
+        </ng-template>
+        <ng-template #item let-color>
+          <div class="flex items-center gap-2">
+            <span
+              [style.background-color]="color.hexValue"
+              class="inline-block size-5 h-5 rounded-md"
+            ></span>
+            {{ color.displayName }}
+          </div>
+        </ng-template>
+      </p-select>
       @if (checkFormFieldValidity('sanitari.codiceColore')) {
         @if (getFormFieldError('sanitari.codiceColore', 'required')) {
           <p-message severity="error" variant="simple">
