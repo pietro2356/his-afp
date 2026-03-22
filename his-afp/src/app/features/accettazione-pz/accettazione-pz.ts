@@ -19,4 +19,8 @@ export class AccettazionePz {
     Validators.minLength(2),
     Validators.maxLength(30),
   ]);
+
+  checkFormFieldValidity(field: string) {
+    return this.nome.invalid && (this.nome.touched || this.nome.dirty);
+  }
 }

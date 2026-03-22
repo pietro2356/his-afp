@@ -2,13 +2,13 @@
   <label for="nome">Nome:</label>
   <input
     [formControl]="nome"
-    [invalid]="nome.invalid && (nome.touched || nome.dirty)"
+    [invalid]="checkFormFieldValidity('nome')"
     class="w-2xs"
     id="nome"
     pInputText
     type="text"
   >
-  @if (nome.invalid && (nome.touched || nome.dirty)) {
+  @if (checkFormFieldValidity('nome')) {
     @if (nome.getError('required')) {
       <p-message severity="error" variant="simple">
         Il campo 'nome' è obbligatorio.
