@@ -10,19 +10,19 @@
   >
   @if (nome.invalid && (nome.touched || nome.dirty)) {
     @if (nome.getError('required')) {
-      <p class="text-red-500">
+      <p-message severity="error" variant="simple">
         Il campo 'nome' è obbligatorio.
-      </p>
+      </p-message>
     }
     @if (nome.getError('minlength')) {
-      <p class="text-red-500">
+      <p-message severity="error" variant="simple">
         Il campo 'nome' deve contenere almeno {{ nome.getError('minlength').requiredLength }} caratteri.
-      </p>
+      </p-message>
     }
     @if (nome.getError('maxlength')) {
-      <p class="text-red-500">
+      <p-message severity="error" variant="simple">
         Il campo 'nome' non può superare i {{ nome.getError('maxlength').requiredLength }} caratteri.
-      </p>
+      </p-message>
     }
   }
 </div>
