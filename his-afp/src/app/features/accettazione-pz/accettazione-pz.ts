@@ -6,10 +6,21 @@ import { Message } from 'primeng/message';
 import { Select } from 'primeng/select';
 import { DatePicker } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
+import { Textarea } from 'primeng/textarea';
+import { Fieldset } from 'primeng/fieldset';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [InputText, ReactiveFormsModule, Message, Select, DatePicker, Button],
+  imports: [
+    InputText,
+    ReactiveFormsModule,
+    Message,
+    Select,
+    DatePicker,
+    Button,
+    Textarea,
+    Fieldset,
+  ],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,9 +34,17 @@ export class AccettazionePz {
       nome: ['', [Validators.required]],
       cognome: ['', [Validators.required]],
       dataNascita: ['', [Validators.required]],
+      codiceFiscale: [
+        '',
+        [Validators.required, Validators.minLength(16), Validators.maxLength(16)],
+      ],
+      sesso: ['', [Validators.required]],
     }),
     sanitari: this.fb.group({
+      patologia: ['', [Validators.required]],
       codiceColore: ['', [Validators.required]],
+      modArrivo: ['', [Validators.required]],
+      noteTriage: ['', [Validators.required, Validators.maxLength(500)]],
     }),
   });
 
