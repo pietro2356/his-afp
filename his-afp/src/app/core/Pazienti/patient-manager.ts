@@ -1,14 +1,17 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Paziente, PazienteDTO } from './Pazienti.model';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
+  deps: [PatientManager],
 })
 export class PatientManager {
   timer_id = signal<number>(-1);
+  readonly #router = inject(Router);
   #http = inject(HttpClient);
   #listaPZ = signal<Paziente[]>([]);
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
@@ -76,5 +79,19 @@ export class PatientManager {
       return fullName.includes(name.toLowerCase());
     });
     this.#listaPZFiltered.set(filtered);
+  }
+
+  public admitPatient(paziente: PatientAdmission) {
+    this.#http
+      .post<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/admissions`, paziente)
+      .subscribe({
+        next: (res) => {
+          this.fetchPazienti();
+          this.#router.navigate(['lista-pz']);
+        },
+        error: (error) => {
+          console.error("Errore durante l'ammissione del paziente:", error);
+        },
+      });
   }
 }

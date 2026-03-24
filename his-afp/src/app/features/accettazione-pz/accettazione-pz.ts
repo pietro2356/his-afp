@@ -8,6 +8,8 @@ import { DatePicker } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { Textarea } from 'primeng/textarea';
 import { Fieldset } from 'primeng/fieldset';
+import { PatientManager } from '../../core/Pazienti/patient-manager';
+import { PatientAdmission } from '../../core/Pazienti/Pazienti.model';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -28,6 +30,7 @@ import { Fieldset } from 'primeng/fieldset';
 export class AccettazionePz {
   fb = inject(FormBuilder);
   gestioneRisorse = inject(GestioneRisorse);
+  pzManager = inject(PatientManager);
 
   paziente = this.fb.group({
     anagrafica: this.fb.group({
@@ -40,7 +43,7 @@ export class AccettazionePz {
       ],
       sesso: ['', [Validators.required]],
     }),
-    sanitari: this.fb.group({
+    sanitaria: this.fb.group({
       patologia: ['', [Validators.required]],
       codiceColore: ['', [Validators.required]],
       modArrivo: ['', [Validators.required]],
@@ -60,6 +63,7 @@ export class AccettazionePz {
   submitForm() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);
+      this.pzManager.admitPatient(this.paziente.value as PatientAdmission);
     } else {
       this.paziente.markAllAsTouched();
     }
