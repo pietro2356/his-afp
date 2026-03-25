@@ -1,13 +1,126 @@
-<p>modifica-pz works!</p>
+<!--<p>modifica-pz works!</p>-->
 
-<p>Patient ID: {{ patientId() || 'NONE' }}</p>
+<!--<p>Patient ID: {{ patientId() || 'NONE' }}</p>-->
 
-@if (patient.hasValue()) {
-  <p>Patient Name: {{ patient.value().data | json }}</p>
-} @else if (patient.error()) {
-  <p>Error loading patient: {{ patient.error()?.message || 'boh' }}</p>
-} @else if (patient.isLoading()) {
-  <p>Loading patient data...</p>
-}
+<!--@if (patient.hasValue()) {-->
+<!--  <p>Patient Name: {{ patient.value().data | json }}</p>-->
+<!--} @else if (patient.error()) {-->
+<!--  <p>Error loading patient: {{ patient.error()?.message || 'boh' }}</p>-->
+<!--} @else if (patient.isLoading()) {-->
+<!--  <p>Loading patient data...</p>-->
+<!--}-->
 
-<p-button (onClick)="patient.reload()" label="Load Patient"></p-button>
+<!--<p-button (onClick)="patient.reload()" label="Load Patient"></p-button>-->
+<!--<hr>-->
+<form [formGroup]="admissionForm">
+  <div class="flex flex-row flex-wrap gap-8">
+    <p-fieldset formGroupName="anagrafica" legend="Dati anagrafici">
+      <div class="flex flex-col p-4">
+        <label for="nome">Nome:</label>
+        <input
+          [invalid]="checkFormFieldValidity('anagrafica.nome')"
+          class="w-2xs"
+          formControlName="nome"
+          id="nome"
+          pInputText
+          type="text"
+        />
+        @if (checkFormFieldValidity('anagrafica.nome')) {
+          @if (getFormFieldError('anagrafica.nome', 'required')) {
+            <p-message severity="error" variant="simple"> Il campo 'nome' è obbligatorio.</p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="cognome">Cognome:</label>
+        <input
+          [invalid]="checkFormFieldValidity('anagrafica.cognome')"
+          class="w-2xs"
+          formControlName="cognome"
+          id="cognome"
+          pInputText
+          type="text"
+        />
+        @if (checkFormFieldValidity('anagrafica.cognome')) {
+          @if (getFormFieldError('anagrafica.cognome', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'cognome' è obbligatorio.
+            </p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="dataNascita">Data di Nascita:</label>
+        <p-datePicker
+          [invalid]="checkFormFieldValidity('anagrafica.dataNascita')"
+          class="w-2xs"
+          dateFormat="dd/mm/yy"
+          formControlName="dataNascita"
+          id="dataNascita"
+        />
+        @if (checkFormFieldValidity('anagrafica.dataNascita')) {
+          @if (getFormFieldError('anagrafica.dataNascita', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'Data di Nascita' è obbligatorio.
+            </p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="codiceFiscale">Codice Fiscale:</label>
+        <input
+          [invalid]="checkFormFieldValidity('anagrafica.codiceFiscale')"
+          class="w-2xs"
+          formControlName="codiceFiscale"
+          id="codiceFiscale"
+          pInputText
+          type="text"
+        />
+        @if (checkFormFieldValidity('anagrafica.codiceFiscale')) {
+          @if (getFormFieldError('anagrafica.codiceFiscale', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'Codice Fiscale' è obbligatorio.
+            </p-message>
+          }
+          @if (getFormFieldError('anagrafica.codiceFiscale', 'maxlength')) {
+
+            <p-message severity="error" variant="simple">
+              <div
+                class="break-keep">
+                Il campo 'Codice Fiscale' deve essere lungo 16 caratteri.
+              </div>
+
+            </p-message>
+
+          }
+          @if (getFormFieldError('anagrafica.codiceFiscale', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'Codice Fiscale' deve essere lungo 16 caratteri.
+            </p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="sesso">Sesso</label>
+        <p-select
+          [invalid]="checkFormFieldValidity('anagrafica.sesso')"
+          [options]="[{ label: 'Maschio', value: 'M' }, { label: 'Femmina', value: 'F' }]"
+          [showClear]="true"
+          class="w-2xs"
+          formControlName="sesso"
+          id="sesso"
+          optionLabel="label"
+          optionValue="value"
+        />
+        @if (checkFormFieldValidity('anagrafica.sesso')) {
+          @if (getFormFieldError('anagrafica.sesso', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'sesso' è obbligatorio.
+            </p-message>
+          }
+        }
+      </div>
+    </p-fieldset>
+  </div>
+</form>
+
