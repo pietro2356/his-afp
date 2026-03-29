@@ -17,12 +17,20 @@
   <ng-template #body let-pz>
     <tr>
       <td>{{ pz.id }}</td>
-      <td>{{ pz.codiceColore }}</td>
+      <td>
+        <his-color-box [color]="pz.codiceColore"/>
+      </td>
       <td>{{ pz.cognome }} {{ pz.nome }}</td>
       <td>{{ pz.braccialetto }}</td>
       <td>{{ pz.eta }}</td>
       <td>{{ pz.patologia }}</td>
       <td>{{ pz.note }}</td>
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="5">Nessun paziente trovato</td>
     </tr>
   </ng-template>
 </p-table>

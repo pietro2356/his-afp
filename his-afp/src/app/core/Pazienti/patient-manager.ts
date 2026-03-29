@@ -9,36 +9,18 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class PatientManager {
-  timer_id = signal<number>(-1);
   #http = inject(HttpClient);
   readonly #router = inject(Router);
   #listaPZ = signal<Paziente[]>([]);
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
   listaPZ = this.#listaPZFiltered.asReadonly();
 
-  // constructor() {
-  //   this.fetchPazienti();
-  // }
-
-  /**
-   * Creazione timer di t secondi
-   */
-  public refreshPazienti() {
-    if (this.timer_id() >= 0) return;
-    let id = setInterval(() => this.fetchPazienti(), 1000);
-    this.timer_id.set(id);
-  }
-
-  public stopRefreshPazienti() {
-    clearInterval(this.timer_id());
-    this.timer_id.set(-1);
-  }
-
   public fetchPazienti() {
     this.#http.get<APIResponse<PazienteDTO[]>>(`${environment.apiUrl}/admissions`).subscribe({
       next: (res) => {
         const pz = res.data.map((p) => this.mapPazienteDTOToPaziente(p));
         this.#listaPZ.set(pz);
+        this.#listaPZFiltered.set(pz);
       },
       error: (err) => {
         console.error('Errore durante il fetch dei pazienti:', err);
