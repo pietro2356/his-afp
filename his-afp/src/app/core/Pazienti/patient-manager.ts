@@ -59,6 +59,19 @@ export class PatientManager {
       });
   }
 
+  public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
+    this.#http
+      .patch<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/patients/${pzId}`, residenza)
+      .subscribe({
+        next: (res) => {
+          this.#router.navigate([`/modifica-pz/${res.data.id}`]);
+        },
+        error: (err) => {
+          console.error("Errore durante l'ammissione del paziente:", err);
+        },
+      });
+  }
+
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {
     return {
       id: pz.id.toString(),
