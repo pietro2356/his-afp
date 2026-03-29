@@ -1,35 +1,28 @@
-<p-button
-  (onClick)="PatientManager.fetchPazienti()"
-  [rounded]="true"
-  [text]="true"
-  icon="pi pi-refresh"
-  severity="secondary"
-/>
-<p-button
-  (onClick)="PatientManager.stopRefreshPazienti()"
-  [rounded]="true"
-  [text]="true"
-  icon="pi pi-stop"
-  severity="warn"
-/>
-<p-toggle-switch
-  [(ngModel)]="enableRefreshPz"
-/>
-<p>{{ enableRefreshPz() }}</p>
-<input
-  [(ngModel)]="nomePaziente"
-  pInputText
-  type="text"
+<p-table
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [value]="PatientManager.listaPZ()"
 >
+  <ng-template #header>
+    <tr>
+      <th>ID</th>
+      <th>Codice colore</th>
+      <th>Anagrafica</th>
+      <th>Braccialetto</th>
+      <th>Eta</th>
+      <th>Patologia</th>
+      <th>Note</th>
+    </tr>
+  </ng-template>
 
-<p>Pazienti presenti in PS: {{ PatientManager.listaPZ().length }}</p>
-
-<div
-  class="flex flex-wrap flex-row gap-4 p-4"
->
-  @for (paziente of PatientManager.listaPZ(); track paziente.braccialetto) {
-    <his-card-pz [borderTop]="false" [paziente]="paziente"/>
-  } @empty {
-    <h1>Nessun paziente in attesa</h1>
-  }
-</div>
+  <ng-template #body let-pz>
+    <tr>
+      <td>{{ pz.id }}</td>
+      <td>{{ pz.codiceColore }}</td>
+      <td>{{ pz.cognome }} {{ pz.nome }}</td>
+      <td>{{ pz.braccialetto }}</td>
+      <td>{{ pz.eta }}</td>
+      <td>{{ pz.patologia }}</td>
+      <td>{{ pz.note }}</td>
+    </tr>
+  </ng-template>
+</p-table>
