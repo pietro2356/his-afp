@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, untracked } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { PazienteDTO } from '../../core/Pazienti/Pazienti.model';
 import { APIResponse } from '../../core/models/APIResponse.model';
@@ -28,7 +28,7 @@ import { formatDate } from '@angular/common';
   ],
   templateUrl: './modifica-pz.html',
   styleUrl: './modifica-pz.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModificaPz {
   patientId = input<string>();
@@ -36,6 +36,7 @@ export class ModificaPz {
   patientReq = httpResource<APIResponse<PazienteDTO>>(
     () => `http://localhost:3000/admissions/${this.patientId()}`,
   );
+
   readonly maxDate = new Date();
   readonly sexOption = [
     {
@@ -71,30 +72,34 @@ export class ModificaPz {
 
   constructor() {
     effect(() => {
-      const pzVal = this.patientReq.value();
-      if (this.patientId() === undefined) {
-        console.warn(
-          'Patient ID is undefined. Please provide a valid patient ID in the route parameters.',
-        );
-      }
+      // console.log('Patient ID from route parameters:', this.patientId());
+      // if (this.patientId() === undefined) {
+      //   console.warn(
+      //     'Patient ID is undefined. Please provide a valid patient ID in the route parameters.',
+      //   );
+      // }
 
-      if (pzVal?.data) {
-        const data = pzVal.data;
-        this.paziente.patchValue({
-          anagrafica: {
-            nome: data.nome,
-            cognome: data.cognome,
-            dataNascita: formatDate(data.dataNascita, 'dd/MM/yyyy', 'en'),
-            codiceFiscale: data.codiceFiscale,
-            sesso: data.sex,
-          },
-          sanitaria: {
-            patologia: data.patologiaCode,
-            modArrivo: data.modalitaArrivoCode,
-            noteTriage: data.noteTriage,
-            codiceColore: data.coloreCode,
-          },
-        });
+      // console.log('API response for patient data:', pzVal);
+      if (this.patientReq.hasValue()) {
+        const data = this.patientReq.value().data;
+        console.log('Fetched patient data:', data);
+        untracked(() =>
+          this.paziente.patchValue({
+            anagrafica: {
+              nome: data.nome,
+              cognome: data.cognome,
+              dataNascita: formatDate(data.dataNascita, 'dd/MM/yyyy', 'en'),
+              codiceFiscale: data.codiceFiscale,
+              sesso: data.sex,
+            },
+            sanitaria: {
+              patologia: data.patologiaCode,
+              modArrivo: data.modalitaArrivoCode,
+              noteTriage: data.noteTriage,
+              codiceColore: data.coloreCode,
+            },
+          }),
+        );
       }
     });
   }
