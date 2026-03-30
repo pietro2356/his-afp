@@ -12,7 +12,23 @@
     class="pl-1"
   >
     <h1 class="text-4xl font-bold text-primary">{{ reparto }}</h1>
-    <p class="text-md text-primary">{{ struttura }}</p>
+    <p class="text-md text-primary">{{ struttura }}
+      @switch (env) {
+        @case ('dev') {
+          <p-tag severity="secondary" value="DEV"/>
+        }
+        @case ('test') {
+          <p-tag severity="success" value="TEST"/>
+        }
+        @case ('prod') {
+          <p-tag severity="info" value="PROD"/>
+        }
+        @default {
+          <p-tag severity="danger" value="NO ENV"/>
+        }
+      }
+    </p>
+
   </div>
 
   <!--  DIVIDER-->
