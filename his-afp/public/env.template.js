@@ -3,5 +3,5 @@
   window['ver'] = window['ver'] || {};
   // Questo segnaposto verrà sostituito all'avvio del container
   window['env']['type'] = '${APP_ENV}';
-  window['ver']['type'] = 'v1.1.2';
+  window['ver']['type'] = 'v1.1.3';
 })(this);
