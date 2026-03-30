@@ -55,11 +55,14 @@ if [ "$SUCCESS" = false ]; then
     exit 1
 fi
 
-# 4. FIX SED: Sostituzione sicura dell'intero upstream
-echo "🚦 Aggiornamento Gateway..."
-# Usiamo il delimitatore | per chiarezza e cerchiamo il pattern esatto
-sed -i "s/server frontend-$OLD:80;/server frontend-$TARGET:80;/g" gateway/nginx.conf > gateway/nginx.conf.tmp && mv gateway/nginx.conf.tmp gateway/nginx.conf
+echo "🚦 Switch del traffico: $OLD -> $TARGET"
 
-# 5. Reload
+# CREIAMO IL NUOVO CONTENUTO IN UNA VARIABILE O FILE TEMPORANEO
+# Poi lo "iniettiamo" nel file originale mantenendo l'inode
+NEW_CONF=$(sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/nginx.conf)
+echo "$NEW_CONF" > gateway/nginx.conf
+
+# Ora NGINX nel container vedrà istantaneamente il cambio contenuto
 docker exec sio-gateway nginx -s reload
-echo "✅ Deploy $VERSION su $TARGET completato."
+
+echo "✅ Traffico spostato su $TARGET correttamente."
