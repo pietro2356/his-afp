@@ -17,4 +17,5 @@ export class Header {
   reparto = environment.reparto;
   struttura = environment.struttura;
   env = (window as any).env?.type || 'unknown';
+  ver = (window as any).ver?.type || 'unknown';
 }

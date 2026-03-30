@@ -15,16 +15,16 @@
     <p class="text-md text-primary">{{ struttura }}
       @switch (env) {
         @case ('dev') {
-          <p-tag severity="secondary" value="DEV"/>
+          <p-tag severity="secondary" value="DEV - {{ver}}"/>
         }
         @case ('test') {
-          <p-tag severity="success" value="TEST"/>
+          <p-tag severity="success" value="TEST - {{ver}}"/>
         }
         @case ('prod') {
-          <p-tag severity="info" value="PROD"/>
+          <p-tag severity="info" value="PROD - {{ver}}"/>
         }
         @default {
-          <p-tag severity="danger" value="NO ENV"/>
+          <p-tag severity="danger" value="NO ENV - {{ver}}"/>
         }
       }
     </p>
