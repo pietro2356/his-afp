@@ -9,7 +9,7 @@ RUN npm run build
 
 # STAGE 2: Web Server (Interno)
 FROM nginx:alpine
-# Usiamo una versione semplificata del tuo nginx.conf (vedi sotto)
+# Usiamo una versione semplificata del tuo default.conf (vedi sotto)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # CORREZIONE: Il percorso deve combaciare con il tuo project tree
 COPY --from=build /app/dist/his-afp/browser /usr/share/nginx/html

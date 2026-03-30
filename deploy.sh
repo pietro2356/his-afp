@@ -6,7 +6,7 @@ echo "🚀 Versione Git rilevata: $VERSION"
 
 # 2. Identifica chi è attivo leggendo la config REALE di NGINX
 # Cerchiamo esattamente la stringa dopo 'server ' e prima di ':80'
-CURRENT_ACTIVE=$(grep -oP 'server \Kfrontend-\w+' gateway/nginx.conf)
+CURRENT_ACTIVE=$(grep -oP 'server \Kfrontend-\w+' gateway/default.conf)
 
 if [ "$CURRENT_ACTIVE" == "frontend-blue" ]; then
     TARGET="green"
@@ -55,14 +55,19 @@ if [ "$SUCCESS" = false ]; then
     exit 1
 fi
 
-echo "🚦 Switch del traffico: $OLD -> $TARGET"
+echo "🚦 Inizio switch del traffico da $OLD a $TARGET..."
 
-# CREIAMO IL NUOVO CONTENUTO IN UNA VARIABILE O FILE TEMPORANEO
-# Poi lo "iniettiamo" nel file originale mantenendo l'inode
-NEW_CONF=$(sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/nginx.conf)
-echo "$NEW_CONF" > gateway/nginx.conf
+# Leggiamo, sostituiamo e sovrascriviamo mantenendo l'inode
+sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/default.conf > gateway/default.conf.tmp
+cat gateway/default.conf.tmp > gateway/default.conf
+rm gateway/default.conf.tmp
 
-# Ora NGINX nel container vedrà istantaneamente il cambio contenuto
-docker exec sio-gateway nginx -s reload
-
-echo "✅ Traffico spostato su $TARGET correttamente."
+# Verifichiamo che il file nel container sia aggiornato prima del reload
+if docker exec sio-gateway cat /etc/nginx/conf.d/default.conf | grep -q "frontend-$TARGET"; then
+    echo "✅ Configurazione sincronizzata nel container. Ricarico NGINX..."
+    docker exec sio-gateway nginx -s reload
+    echo "🚀 Deploy completato con successo!"
+else
+    echo "❌ Errore critico: La configurazione non si è aggiornata nel container."
+    exit 1
+fi
