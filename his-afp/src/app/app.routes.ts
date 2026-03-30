@@ -1,9 +1,14 @@
 import { Routes } from '@angular/router';
+import { fetchPatientListResolver } from './core/Pazienti/resolver/fetch-patient-list-resolver';
+import { patientInfoResolver } from './core/Pazienti/resolver/patient-info-resolver';
 
 export const routes: Routes = [
   {
     path: 'lista-pz',
     loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
+    resolve: {
+      loadPz: fetchPatientListResolver,
+    },
   },
   {
     path: 'accettazione-pz',
@@ -18,6 +23,9 @@ export const routes: Routes = [
     // /modifica-pz?id=2
     path: 'modifica-pz/:patientId',
     loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
+    resolve: {
+      patientInfo: patientInfoResolver,
+    },
   },
   {
     path: 'stato-servizi',

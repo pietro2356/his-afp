@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, untracked } from '@angular/core';
-import { httpResource } from '@angular/common/http';
 import { PatientAdmission, PazienteDTO } from '../../core/Pazienti/Pazienti.model';
 import { APIResponse } from '../../core/models/APIResponse.model';
 import { Button } from 'primeng/button';
@@ -11,8 +10,8 @@ import { Message } from 'primeng/message';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
-import { formatDate } from '@angular/common';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'his-modifica-pz',
@@ -33,11 +32,10 @@ import { PatientManager } from '../../core/Pazienti/patient-manager';
 })
 export class ModificaPz {
   patientId = input<string>();
+  patientInfo = input.required<APIResponse<PazienteDTO> | undefined>();
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
-  patientReq = httpResource<APIResponse<PazienteDTO>>(
-    () => `http://localhost:3000/admissions/${this.patientId()}`,
-  );
+
   readonly maxDate = new Date();
   readonly sexOption = [
     {
@@ -79,14 +77,15 @@ export class ModificaPz {
 
   constructor() {
     effect(() => {
+      console.log('PatientInfo Fetched from resolver', this.patientInfo());
       if (this.patientId() === undefined) {
         console.warn(
           'Patient ID is undefined. Please provide a valid patient ID in the route parameters.',
         );
       }
 
-      if (this.patientReq.hasValue()) {
-        const data = this.patientReq.value().data;
+      const data = this.patientInfo()?.data;
+      if (data) {
         untracked(() => {
           this.paziente.patchValue({
             anagrafica: {
