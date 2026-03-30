@@ -30,5 +30,36 @@ services:
       - db
     restart: always
 
+  # FE BLUE (STABILE)
+  frontend-blue:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    container_name: sio-frontend-blue
+    environment:
+      env: "production"
+
+  # FE GREEN (IN SVILUPPO)
+  frontend-green:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    container_name: sio-frontend-green
+    environment:
+      env: "test"
+
+  # GATEWAY
+  gateway:
+    image: nginx:alpine
+    container_name: sio-gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend-blue
+      - frontend-green
+    restart: always
+
 volumes:
   pg_data:
