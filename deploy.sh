@@ -1,19 +1,12 @@
 #!/bin/bash
 
-# 1. Recupera l'ultimo TAG di Git
-VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
-
-if [ -z "$VERSION" ]; then
-    VERSION="latest"
-fi
-
+VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")
 echo "🚀 Inizio Deploy versione: $VERSION"
 
-# 2. Identifica quale frontend è attualmente attivo nel Gateway
-# Cerchiamo nel file del gateway quale upstream è decommentato
-CURRENT_ACTIVE=$(grep "server frontend-" gateway/nginx.conf | head -n 1 | awk '{print $2}' | cut -d':' -f1)
+# 1. Identifica attivo/inattivo
+CURRENT_ACTIVE=$(docker exec sio-gateway nginx -T | grep "server frontend-" | head -n 1 | awk '{print $2}' | cut -d':' -f1)
 
-if [ "$CURRENT_ACTIVE" == "frontend-blue" ]; then
+if [ "$CURRENT_ACTIVE" == "sio-frontend-blue" ]; then
     TARGET="green"
     OLD="blue"
 else
@@ -21,22 +14,46 @@ else
     OLD="green"
 fi
 
-echo "🔄 Stato attuale: $OLD attivo. Target deploy: $TARGET"
+echo "🔄 Stato: $OLD attivo. Preparazione $TARGET..."
 
-# 3. Build della nuova immagine con il tag di Git
-echo "📦 Building image: his-afp:$VERSION..."
-docker build -t his-afp:$VERSION ./his-afp
-
-# 4. Update e Start del container target
-# Usiamo il tag appena creato per il nuovo container
+# 2. Build e Start (senza downtime per il vecchio)
+docker compose build frontend-$TARGET
 docker compose up -d frontend-$TARGET
 
-# 5. Switch del traffico nel Gateway (Automazione di NGINX)
-echo "🚦 Switch del traffico da $OLD a $TARGET..."
-# Usiamo 'sed' per cambiare il puntamento nel file di configurazione
-sed -i "s/server frontend-$OLD:80;/server frontend-$TARGET:80;/g" gateway/nginx.conf
+# 3. 🧪 HEALTH CHECK
+echo "🔍 Verifica salute del container frontend-$TARGET..."
+MAX_RETRIES=10
+COUNT=0
+SUCCESS=false
 
-# 6. Reload del Gateway senza downtime
+while [ $COUNT -lt $MAX_RETRIES ]; do
+    # Usiamo docker inspect per trovare l'IP interno del container target
+    TARGET_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sio-frontend-$TARGET)
+
+    # Eseguiamo un curl dal container gateway verso il target
+    STATUS=$(docker exec sio-gateway curl -s -o /dev/null -w "%{http_code}" http://$TARGET_IP)
+
+    if [ "$STATUS" == "200" ]; then
+        echo "✅ Container $TARGET in salute (HTTP 200)!"
+        SUCCESS=true
+        break
+    fi
+
+    echo "⏳ In attesa... (tentativo $((COUNT+1))/$MAX_RETRIES)"
+    sleep 2
+    COUNT=$((COUNT+1))
+done
+
+if [ "$SUCCESS" = false ]; then
+    echo "❌ Errore: Il container $TARGET non ha risposto in tempo. Abortisco deploy."
+    exit 1
+fi
+
+# 4. SWITCH (Fix Inode per Docker)
+echo "🚦 Switch del traffico..."
+# Sovrascriviamo il file senza cambiare l'inode
+sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/nginx.conf > gateway/nginx.conf.tmp && mv gateway/nginx.conf.tmp gateway/nginx.conf
+
+# 5. RELOAD
 docker exec sio-gateway nginx -s reload
-
-echo "✅ Deploy completato! La versione $VERSION è live su $TARGET."
+echo "✅ Deploy completato con successo."
