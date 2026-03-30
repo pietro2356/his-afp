@@ -2,27 +2,27 @@
 
 # 1. Recupera il tag da Git
 VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.1")
-echo "🚀 Versione rilevata da Git: $VERSION"
+echo "🚀 Versione Git rilevata: $VERSION"
 
-# 2. Identifica chi è attivo (chiedendo a NGINX)
-CURRENT_ACTIVE=$(docker exec sio-gateway nginx -T | grep "server frontend-" | head -n 1 | awk '{print $2}' | cut -d':' -f1)
+# 2. Identifica chi è attivo leggendo la config REALE di NGINX
+# Cerchiamo esattamente la stringa dopo 'server ' e prima di ':80'
+CURRENT_ACTIVE=$(grep -oP 'server \Kfrontend-\w+' gateway/nginx.conf)
 
-# 3. Definisci Target e assegna i TAG
-if [ "$CURRENT_ACTIVE" == "sio-frontend-blue" ]; then
+if [ "$CURRENT_ACTIVE" == "frontend-blue" ]; then
     TARGET="green"
+    OLD="blue"
     export FE_GREEN_TAG=$VERSION
-    # Dobbiamo mantenere la versione attuale del blue per non farlo riavviare
     export FE_BLUE_TAG="stable"
 else
     TARGET="blue"
+    OLD="green"
     export FE_BLUE_TAG=$VERSION
     export FE_GREEN_TAG="latest"
 fi
 
-echo "📦 Build e Deploy di frontend-$TARGET con tag $VERSION..."
+echo "🔄 Switch: $OLD -> $TARGET"
 
-# 4. Esegui il comando passando le variabili
-# Docker Compose leggerà FE_BLUE_TAG e FE_GREEN_TAG dall'ambiente dello script
+# 3. Build e Up del target
 docker compose build frontend-$TARGET
 docker compose up -d frontend-$TARGET
 
@@ -55,9 +55,11 @@ if [ "$SUCCESS" = false ]; then
     exit 1
 fi
 
-# 4. SWITCH (Fix Inode per Docker)
-echo "🚦 Switch del traffico..."
-# Sovrascriviamo il file senza cambiare l'inode
-sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/nginx.conf > gateway/nginx.conf.tmp && mv gateway/nginx.conf.tmp gateway/nginx.conf
+# 4. FIX SED: Sostituzione sicura dell'intero upstream
+echo "🚦 Aggiornamento Gateway..."
+# Usiamo il delimitatore | per chiarezza e cerchiamo il pattern esatto
+sed -i "s/server frontend-$OLD:80;/server frontend-$TARGET:80;/g" gateway/nginx.conf
+
+# 5. Reload
 docker exec sio-gateway nginx -s reload
-echo "✅ Deploy completato con successo."
+echo "✅ Deploy $VERSION su $TARGET completato."
