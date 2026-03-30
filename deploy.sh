@@ -1,22 +1,28 @@
 #!/bin/bash
 
-VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")
-echo "🚀 Inizio Deploy versione: $VERSION"
+# 1. Recupera il tag da Git
+VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.1")
+echo "🚀 Versione rilevata da Git: $VERSION"
 
-# 1. Identifica attivo/inattivo
+# 2. Identifica chi è attivo (chiedendo a NGINX)
 CURRENT_ACTIVE=$(docker exec sio-gateway nginx -T | grep "server frontend-" | head -n 1 | awk '{print $2}' | cut -d':' -f1)
 
+# 3. Definisci Target e assegna i TAG
 if [ "$CURRENT_ACTIVE" == "sio-frontend-blue" ]; then
     TARGET="green"
-    OLD="blue"
+    export FE_GREEN_TAG=$VERSION
+    # Dobbiamo mantenere la versione attuale del blue per non farlo riavviare
+    export FE_BLUE_TAG="stable"
 else
     TARGET="blue"
-    OLD="green"
+    export FE_BLUE_TAG=$VERSION
+    export FE_GREEN_TAG="latest"
 fi
 
-echo "🔄 Stato: $OLD attivo. Preparazione $TARGET..."
+echo "📦 Build e Deploy di frontend-$TARGET con tag $VERSION..."
 
-# 2. Build e Start (senza downtime per il vecchio)
+# 4. Esegui il comando passando le variabili
+# Docker Compose leggerà FE_BLUE_TAG e FE_GREEN_TAG dall'ambiente dello script
 docker compose build frontend-$TARGET
 docker compose up -d frontend-$TARGET
 
@@ -53,7 +59,5 @@ fi
 echo "🚦 Switch del traffico..."
 # Sovrascriviamo il file senza cambiare l'inode
 sed "s/frontend-$OLD/frontend-$TARGET/g" gateway/nginx.conf > gateway/nginx.conf.tmp && mv gateway/nginx.conf.tmp gateway/nginx.conf
-
-# 5. RELOAD
 docker exec sio-gateway nginx -s reload
 echo "✅ Deploy completato con successo."

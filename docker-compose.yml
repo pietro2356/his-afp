@@ -35,6 +35,7 @@ services:
     build:
       context: ./his-afp
       dockerfile: Dockerfile
+    image: his-afp:${FE_BLUE_TAG:-stable}
     container_name: sio-frontend-blue
     environment:
       APP_ENV: "prod"
@@ -44,6 +45,7 @@ services:
     build:
       context: ./his-afp
       dockerfile: Dockerfile
+    image: his-afp:${FE_GREEN_TAG:-latest}
     container_name: sio-frontend-green
     environment:
       APP_ENV: "test"
