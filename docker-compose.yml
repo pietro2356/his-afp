@@ -37,7 +37,7 @@ services:
       dockerfile: Dockerfile
     container_name: sio-frontend-blue
     environment:
-      env: "production"
+      APP_ENV: "prod"
 
   # FE GREEN (IN SVILUPPO)
   frontend-green:
@@ -46,7 +46,7 @@ services:
       dockerfile: Dockerfile
     container_name: sio-frontend-green
     environment:
-      env: "test"
+      APP_ENV: "test"
 
   # GATEWAY
   gateway:
