@@ -23,6 +23,9 @@
         @case ('prod') {
           <p-tag severity="info" value="PROD - {{ver}}"/>
         }
+        @case ('form') {
+          <p-tag severity="contrast" value="FORM - {{ver}}"/>
+        }
         @default {
           <p-tag severity="danger" value="NO ENV - {{ver}}"/>
         }

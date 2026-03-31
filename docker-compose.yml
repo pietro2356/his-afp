@@ -30,37 +30,50 @@ services:
       - db
     restart: always
 
-  # FE BLUE (STABILE)
-  frontend-blue:
+  # AMBIENTE PROD (BLUE)
+  frontend-prod:
     build:
       context: ./his-afp
       dockerfile: Dockerfile
-    image: his-afp:${FE_BLUE_TAG:-stable}
-    container_name: sio-frontend-blue
+    image: his-afp:${PROD_VERSION:-stable}
+    container_name: sio-frontend-prod
     environment:
       APP_ENV: "prod"
 
-  # FE GREEN (IN SVILUPPO)
-  frontend-green:
+  # AMBIENTE TEST (GREEN)
+  frontend-test:
     build:
       context: ./his-afp
       dockerfile: Dockerfile
-    image: his-afp:${FE_GREEN_TAG:-latest}
-    container_name: sio-frontend-green
+    image: his-afp:${TEST_VERSION:-latest}
+    container_name: sio-frontend-test
     environment:
       APP_ENV: "test"
+
+  # AMBIENTE TEST (GREEN)
+  frontend-formazione:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    image: his-afp:${TRAINING_VERSION:-latest}
+    container_name: sio-frontend-formazione
+    environment:
+      APP_ENV: "form"
 
   # GATEWAY
   gateway:
     image: nginx:alpine
     container_name: sio-gateway
     ports:
-      - "80:80"
+      - "80:80"       # Produzione
+      - "8080:8080"   # Test
+      - "8888:8888"   # Formazione
     volumes:
       - ./gateway:/etc/nginx/conf.d/:ro
     depends_on:
-      - frontend-blue
-      - frontend-green
+      - frontend-prod
+      - frontend-test
+      - frontend-formazione
     restart: always
 
 volumes:
