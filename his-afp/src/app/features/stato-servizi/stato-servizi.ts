@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Button } from 'primeng/button';
+import { StatoAPI } from '../../ui/stato-api/stato-api';
 
 interface IEnvProp {
   production: boolean;
@@ -18,7 +19,7 @@ const ENV_PROP_MOCK: IEnvProp = {
 
 @Component({
   selector: 'his-stato-servizi',
-  imports: [Button],
+  imports: [Button, StatoAPI],
   templateUrl: './stato-servizi.html',
   styleUrl: './stato-servizi.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

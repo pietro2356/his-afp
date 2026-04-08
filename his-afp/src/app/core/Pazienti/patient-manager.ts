@@ -2,7 +2,6 @@ import { inject, Injectable, signal } from '@angular/core';
 import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -35,7 +34,7 @@ export class PatientManager {
   }
 
   public fetchPazienti() {
-    this.#http.get<APIResponse<PazienteDTO[]>>(`${environment.apiUrl}/admissions`).subscribe({
+    this.#http.get<APIResponse<PazienteDTO[]>>(`/api/admissions`).subscribe({
       next: (res) => {
         const pz = res.data.map((p) => this.mapPazienteDTOToPaziente(p));
         this.#listaPZ.set(pz);
@@ -47,21 +46,19 @@ export class PatientManager {
   }
 
   public admitPatient(pz: PatientAdmission) {
-    this.#http
-      .post<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/admissions`, pz)
-      .subscribe({
-        next: (res) => {
-          this.#router.navigate([`/modifica-pz/${res.data.id}`]);
-        },
-        error: (err) => {
-          console.error("Errore durante l'ammissione del paziente:", err);
-        },
-      });
+    this.#http.post<APIResponse<PatientAdmissionRes>>(`/api/admissions`, pz).subscribe({
+      next: (res) => {
+        this.#router.navigate([`/modifica-pz/${res.data.id}`]);
+      },
+      error: (err) => {
+        console.error("Errore durante l'ammissione del paziente:", err);
+      },
+    });
   }
 
   public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
     this.#http
-      .patch<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/patients/${pzId}`, residenza)
+      .patch<APIResponse<PatientAdmissionRes>>(`/api/patients/${pzId}`, residenza)
       .subscribe({
         next: (res) => {
           this.#router.navigate([`/lista-pz`]);

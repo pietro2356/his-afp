@@ -30,6 +30,15 @@ services:
       - db
     restart: always
 
+  fe-sio:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    image: his-afp:1.0.0
+    container_name: fe-sio
+    ports:
+      - "8999:80"
+
   # AMBIENTE PROD (BLUE)
   frontend-prod:
     build:
@@ -39,6 +48,7 @@ services:
     container_name: sio-frontend-prod
     environment:
       APP_ENV: "prod"
+      APP_VER: "${PROD_VERSION}"
 
   # AMBIENTE TEST (GREEN)
   frontend-test:
@@ -49,6 +59,7 @@ services:
     container_name: sio-frontend-test
     environment:
       APP_ENV: "test"
+      APP_VER: "${TEST_VERSION}"
     volumes:
       - ./environments:/usr/share/nginx/html/env:ro
 
@@ -61,6 +72,7 @@ services:
     container_name: sio-frontend-formazione
     environment:
       APP_ENV: "form"
+      APP_VER: "${TRAINING_VERSION}"
 
   # GATEWAY
   gateway:
