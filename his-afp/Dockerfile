@@ -6,6 +6,7 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
+RUN rm /app/dist/his-afp/browser/env/*
 
 # STAGE 2: Web Server (Interno)
 FROM nginx:alpine

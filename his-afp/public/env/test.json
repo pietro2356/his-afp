@@ -1,0 +1,6 @@
+{
+  "production": "true",
+  "environment": "test",
+  "version": "1.0.0",
+  "apiUrl": "https://api.example.com"
+}

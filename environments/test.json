@@ -1,0 +1,6 @@
+{
+  "production": "false",
+  "environment": "test",
+  "version": "2.5.1",
+  "apiUrl": "https://api.test.com"
+}

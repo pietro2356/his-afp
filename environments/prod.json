@@ -1,0 +1,6 @@
+{
+  "production": "true",
+  "environment": "prod",
+  "version": "2.5.0-rc",
+  "apiUrl": "https://api.prod.com"
+}

@@ -1,1 +1,8 @@
-<p>stato-servizi works!</p>
+<h1 class="text-2xl">Valriabili evn caricate da file</h1>
+<ul>
+  <li>Production: {{ prop().production }}</li>
+  <li>Environment: {{ prop().environment }}</li>
+  <li>Version: {{ prop().version }}</li>
+  <li>ApiUrl: {{ prop().apiUrl }}</li>
+</ul>
+<p-button (onClick)="loadEnvPropViaFile()" label="Carica variabili da file"></p-button>

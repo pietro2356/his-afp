@@ -1,0 +1,6 @@
+{
+  "production": "false",
+  "environment": "form",
+  "version": "1.0.0",
+  "apiUrl": "https://api.example.com"
+}

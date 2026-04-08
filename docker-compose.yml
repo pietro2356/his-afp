@@ -49,6 +49,8 @@ services:
     container_name: sio-frontend-test
     environment:
       APP_ENV: "test"
+    volumes:
+      - ./environments:/usr/share/nginx/html/env:ro
 
   # AMBIENTE TEST (GREEN)
   frontend-formazione:
