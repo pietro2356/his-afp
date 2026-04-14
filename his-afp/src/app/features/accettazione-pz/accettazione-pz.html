@@ -90,6 +90,11 @@
           pInputText
           type="text"
         />
+        @if (paziente.get('anagrafica.codiceFiscale')?.pending) {
+          <p-message severity="warn" variant="simple">
+            Controllo del codice fiscale in corso...
+          </p-message>
+        }
         @if (checkFormControl('anagrafica.codiceFiscale')) {
           @if (checkFormControlError('anagrafica.codiceFiscale', 'required')) {
             <p-message severity="error" variant="simple">
@@ -99,6 +104,11 @@
           @if (checkFormControlError('anagrafica.codiceFiscale', 'pattern')) {
             <p-message severity="error" variant="simple">
               Il campo 'Codice Fiscale' non rispetta la struttura corretta.
+            </p-message>
+          }
+          @if (checkFormControlError('anagrafica.codiceFiscale', 'cfEsistente')) {
+            <p-message severity="error" variant="simple">
+              Attenzione: questo Codice Fiscale è già presente nel database.
             </p-message>
           }
         }

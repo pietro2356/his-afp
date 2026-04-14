@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fieldset } from 'primeng/fieldset';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
-import { PatientAdmission } from '../../core/Pazienti/Pazienti.model';
+import { AsyncCheckCF } from '../../core/Pazienti/asyncCheckCF';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -52,6 +52,7 @@ export class AccettazionePz {
       codiceFiscale: [
         '',
         [Validators.required, Validators.pattern('[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]')],
+        [AsyncCheckCF.check(this.patientManager)],
         // {pattern: {requiredPattern: '^[a-zA-Z ]*$', actualValue: '1'}}
       ],
       sesso: ['', [Validators.required]],
@@ -81,7 +82,7 @@ export class AccettazionePz {
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);
-      this.patientManager.admitPatient(this.paziente.value as PatientAdmission);
+      this.patientManager.admitPatient(this.paziente.value as any);
     } else {
       this.paziente.markAllAsTouched();
     }
