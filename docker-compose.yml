@@ -25,7 +25,7 @@ services:
       DB_PASS: sio_password
       DB_NAME: sio_db
       JWT_SECRET: "chiave_segreta_super_sicura_per_il_corso_segretissimissima"
-      AUTH_ENABLED: "false"
+      AUTH_ENABLED: "true"
     depends_on:
       - db
     restart: always

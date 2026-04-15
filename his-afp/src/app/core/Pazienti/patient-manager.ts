@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
+import { Anagrafica, PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
@@ -57,6 +57,12 @@ export class PatientManager {
           console.error("Errore durante l'ammissione del paziente:", err);
         },
       });
+  }
+
+  public ricercaPaziente(cf: string) {
+    return this.#http.get<APIResponse<Anagrafica[]>>(
+      `${environment.apiUrl}/patients/search?cf=${cf}`,
+    );
   }
 
   public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
