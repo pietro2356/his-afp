@@ -5,3 +5,8 @@
   icon="pi pi-sun"
   severity="secondary"
 />
+<button (click)="Theme()">
+  <span *ngIf="!darkMode">☀️</span>
+  <span *ngIf="darkMode">🌙</span>
+</button>
+6
