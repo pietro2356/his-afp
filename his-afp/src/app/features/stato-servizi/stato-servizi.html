@@ -1,1 +1,26 @@
-<p>stato-servizi works!</p>
+<div class="flex flex-col gap-4">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold">Stato dei servizi</h1>
+      <p class="text-sm text-gray-600">Monitoraggio dello stato dell'API e del database.</p>
+    </div>
+    <p-button label="Aggiorna" icon="pi pi-refresh" severity="secondary" (onClick)="refreshStatus()" />
+  </div>
+
+  <p-card>
+    <div class="grid gap-4 md:grid-cols-3">
+      <div>
+        <p class="text-sm font-medium text-gray-500">Servizio</p>
+        <p class="mt-1 text-lg font-semibold">{{ systemStatus.statoAPI().service }}</p>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-gray-500">Database</p>
+        <p class="mt-1 text-lg font-semibold">{{ systemStatus.statoAPI().database }}</p>
+      </div>
+      <div>
+        <p class="text-sm font-medium text-gray-500">Uptime</p>
+        <p class="mt-1 text-lg font-semibold">{{ systemStatus.statoAPI().uptime }} s</p>
+      </div>
+    </div>
+  </p-card>
+</div>

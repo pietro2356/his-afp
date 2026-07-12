@@ -13,7 +13,8 @@ export class PatientManager {
   #http = inject(HttpClient);
   readonly #router = inject(Router);
   #listaPZ = signal<Paziente[]>([]);
-  #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
+  #listaPZFiltered = signal<Paziente[]>([]);
+  #filterText = signal<string>('');
   listaPZ = this.#listaPZFiltered.asReadonly();
 
   // constructor() {
@@ -39,6 +40,7 @@ export class PatientManager {
       next: (res) => {
         const pz = res.data.map((p) => this.mapPazienteDTOToPaziente(p));
         this.#listaPZ.set(pz);
+        this.#applyFilter();
       },
       error: (err) => {
         console.error('Errore durante il fetch dei pazienti:', err);
@@ -99,10 +101,19 @@ export class PatientManager {
   }
 
   public filterByName(name: string) {
-    const filtered = this.#listaPZ().filter((p) => {
-      const fullName = `${p.nome} ${p.cognome}`.toLowerCase();
-      return fullName.includes(name.toLowerCase());
-    });
+    this.#filterText.set(name);
+    this.#applyFilter();
+  }
+
+  #applyFilter() {
+    const term = this.#filterText().trim().toLowerCase();
+    const filtered = term
+      ? this.#listaPZ().filter((p) => {
+          const fullName = `${p.nome} ${p.cognome}`.toLowerCase();
+          return fullName.includes(term);
+        })
+      : this.#listaPZ();
+
     this.#listaPZFiltered.set(filtered);
   }
 }
