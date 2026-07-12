@@ -1,0 +1,147 @@
+<div class="flex flex-col gap-6 p-2">
+  <h1 class="text-3xl font-bold text-primary">Gestione Anagrafica Staff</h1>
+
+  <!-- LISTA OPERATORI -->
+  <p-fieldset legend="Elenco operatori in forza">
+    <p-table
+      [value]="gestioneStaff.listaStaff()"
+      [rowHover]="true"
+      dataKey="id"
+      sortField="username"
+      [sortMode]="'single'"
+    >
+      <ng-template #header>
+        <tr>
+          <th pSortableColumn="username">Username <p-sortIcon field="username" /></th>
+          <th pSortableColumn="role">Ruolo <p-sortIcon field="role" /></th>
+          <th>Stato</th>
+          <th>Azioni</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-staff>
+        <tr>
+          <td>{{ staff.username }}</td>
+          <td>
+            <p-select
+              [options]="roleOptions"
+              [style]="{ width: '12rem' }"
+              optionLabel="desc"
+              optionValue="code"
+              [inputId]="'role-' + staff.id"
+              [ngModel]="staff.role"
+              (onChange)="onChangeRole(staff, $event.value)"
+            />
+          </td>
+          <td>
+            @if (staff.isActive) {
+              <p-tag severity="success" value="Attivo" />
+            } @else {
+              <p-tag severity="danger" value="Disattivo" />
+            }
+          </td>
+          <td>
+            <p-button
+              [label]="staff.isActive ? 'Disattiva' : 'Attiva'"
+              [severity]="staff.isActive ? 'warn' : 'success'"
+              [outlined]="true"
+              (onClick)="toggleActive(staff)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="4">Nessun operatore presente.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-fieldset>
+
+  <!-- NUOVO OPERATORE -->
+  <p-fieldset legend="Inserisci nuovo collaboratore">
+    <form (submit)="onSubmit()" [formGroup]="nuovoOperatore" class="flex flex-col gap-4">
+      <div class="flex flex-col">
+        <label for="username">Username:</label>
+        <input
+          [invalid]="checkFormControl('username')"
+          class="w-xs"
+          formControlName="username"
+          id="username"
+          pInputText
+          type="text"
+        />
+        @if (checkFormControl('username')) {
+          @if (checkFormControlError('username', 'required')) {
+            <p-message severity="error" variant="simple">L'username è obbligatorio.</p-message>
+          }
+          @if (checkFormControlError('username', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              L'username deve contenere almeno
+              {{ checkFormControlError('username', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+          @if (checkFormControlError('username', 'usernameNonDisponibile')) {
+            <p-message severity="error" variant="simple">
+              Username già utilizzato da un altro operatore.
+            </p-message>
+          }
+        }
+        @if (nuovoOperatore.get('username')?.pending) {
+          <p-message severity="info" variant="simple">Verifica disponibilità username in corso...</p-message>
+        }
+      </div>
+
+      <div class="flex flex-col">
+        <label for="password">Password:</label>
+        <input
+          [invalid]="checkFormControl('password')"
+          class="w-xs"
+          formControlName="password"
+          id="password"
+          pInputText
+          type="password"
+        />
+        @if (checkFormControl('password')) {
+          @if (checkFormControlError('password', 'required')) {
+            <p-message severity="error" variant="simple">La password è obbligatoria.</p-message>
+          }
+          @if (checkFormControlError('password', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              La password deve contenere almeno
+              {{ checkFormControlError('password', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+        }
+      </div>
+
+      <div class="flex flex-col">
+        <label for="role">Ruolo:</label>
+        <p-select
+          [invalid]="checkFormControl('role')"
+          [options]="roleOptions"
+          class="w-xs"
+          formControlName="role"
+          id="role"
+          optionLabel="desc"
+          optionValue="code"
+        />
+        @if (checkFormControl('role')) {
+          @if (checkFormControlError('role', 'required')) {
+            <p-message severity="error" variant="simple">Il ruolo è obbligatorio.</p-message>
+          }
+        }
+      </div>
+
+      @if (submitted && nuovoOperatore.invalid) {
+        <p-message severity="warn" variant="simple">
+          Correggi i campi evidenziati prima di salvare.
+        </p-message>
+      }
+
+      <div class="flex flex-row gap-3">
+        <p-button label="Salva" type="submit" />
+        <p-button (onClick)="nuovoOperatore.reset()" label="Reset" severity="warn" variant="outlined" />
+      </div>
+    </form>
+  </p-fieldset>
+</div>

@@ -25,6 +25,11 @@ export const routes: Routes = [
       import('./features/stato-servizi/stato-servizi').then((m) => m.StatoServizi),
   },
   {
+    path: 'gestione-staff',
+    loadComponent: () =>
+      import('./features/gestione-staff/gestione-staff').then((m) => m.GestioneStaffComponent),
+  },
+  {
     path: '',
     redirectTo: 'lista-pz',
     pathMatch: 'full',
