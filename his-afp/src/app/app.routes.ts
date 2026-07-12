@@ -6,9 +6,9 @@ export const routes: Routes = [
     loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
   },
   {
-    path: 'accettazione-pz',
+    path: 'monitor-dimessi',
     loadComponent: () =>
-      import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),
+      import('./features/monitor-dimessi/monitor-dimessi').then((m) => m.MonitorDimessi),
   },
   // {
   //   path: 'modifica-pz',
