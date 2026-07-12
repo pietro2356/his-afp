@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
-import { HttpClient } from '@angular/common/http';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO, PatientSearchResult } from './Pazienti.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
@@ -72,6 +73,29 @@ export class PatientManager {
           console.error("Errore durante l'aggiornamento delle informazioni del paziente:", err);
         },
       });
+  }
+
+  public searchPatients(params: {
+    cf?: string;
+    nome?: string;
+    cognome?: string;
+    dataNascita?: string;
+  }): Observable<APIResponse<PatientSearchResult[]>> {
+    const httpParams = new HttpParams({ fromObject: this.#cleanParams(params) });
+    return this.#http.get<APIResponse<PatientSearchResult[]>>(`${environment.apiUrl}/patients/search`, {
+      params: httpParams,
+    });
+  }
+
+  #cleanParams(params: Record<string, string | undefined>): Record<string, string> {
+    const cleaned: Record<string, string> = {};
+    for (const key of Object.keys(params)) {
+      const value = params[key];
+      if (value !== undefined && value !== null && value !== '') {
+        cleaned[key] = value;
+      }
+    }
+    return cleaned;
   }
 
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {

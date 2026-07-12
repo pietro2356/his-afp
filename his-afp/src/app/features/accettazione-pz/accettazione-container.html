@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-4 p-2">
+  <h1 class="text-3xl font-bold text-primary">Accettazione Paziente</h1>
+
+  <his-ricerca-paziente (pazienteSelezionato)="onPazienteSelezionato($event)" />
+
+  @if (mostraForm()) {
+    <h2 class="text-2xl font-semibold text-primary">
+      @if (pazienteSelezionato(); as p) {
+        Scheda anagrafica di {{ p.cognome }} {{ p.nome }}
+      } @else {
+        Nuova scheda anagrafica
+      }
+    </h2>
+    <his-accettazione-pz [pazienteIngresso]="pazienteSelezionato()" />
+    <p-button label="Nuova ricerca" (onClick)="nuovaRicerca()" variant="outlined" />
+  }
+</div>

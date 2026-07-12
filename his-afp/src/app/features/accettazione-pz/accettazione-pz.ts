@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, untracked } from '@angular/core';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { Fieldset } from 'primeng/fieldset';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
-import { PatientAdmission } from '../../core/Pazienti/Pazienti.model';
+import { PatientAdmission, PatientSearchResult } from '../../core/Pazienti/Pazienti.model';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -31,8 +31,35 @@ export class AccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
 
+  pazienteIngresso = input<PatientSearchResult | null>(null);
+
   submitted = false;
   readonly maxDate = new Date();
+
+  constructor() {
+    effect(() => {
+      const paziente = this.pazienteIngresso();
+      untracked(() => {
+        const anagrafica = this.paziente.get('anagrafica');
+        if (paziente) {
+          this.paziente.patchValue({
+            anagrafica: {
+              nome: paziente.nome,
+              cognome: paziente.cognome,
+              dataNascita: paziente.data_nascita
+                ? (new Date(paziente.data_nascita) as unknown as string)
+                : null,
+              codiceFiscale: paziente.codice_fiscale,
+              sesso: paziente.sex,
+            },
+          });
+          anagrafica?.markAsPristine();
+        } else {
+          anagrafica?.reset();
+        }
+      });
+    });
+  }
   readonly sexOption = [
     {
       code: 'M',
