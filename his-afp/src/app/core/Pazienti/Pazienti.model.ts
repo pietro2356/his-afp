@@ -60,3 +60,18 @@ export interface PatientAdmissionRes {
   id: number;
   braccialetto: string;
 }
+
+export interface PatientSearchResult {
+  id: number;
+  nome: string;
+  cognome: string;
+  data_nascita: string;
+  codice_fiscale: string;
+  sex: string;
+  indirizzo_via: string | null;
+  indirizzo_civico: string | null;
+  comune: string | null;
+  provincia: string | null;
+}
+
+export type SearchMode = 'cf' | 'anagrafica';
