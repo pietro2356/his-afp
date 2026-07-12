@@ -4,11 +4,20 @@
     header="{{paziente().cognome}} {{paziente().nome}}"
     subheader="{{paziente().braccialetto}} - {{paziente().codiceColore}}"
   >
-    <p>
-      <b>{{ paziente().patologia }}</b>
-      <br>
-      Note Triage: {{ paziente().note }}
-    </p>
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-semibold">Età</span>
+        <span class="text-sm">{{ paziente().eta }} anni</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-semibold">Patologia</span>
+        <span class="text-sm">{{ paziente().patologia }}</span>
+      </div>
+      <div class="mt-1">
+        <p class="text-sm font-semibold">Note triage</p>
+        <p class="text-sm text-gray-600">{{ paziente().note || 'Nessuna nota' }}</p>
+      </div>
+    </div>
 
     <ng-template #footer>
       <p-button

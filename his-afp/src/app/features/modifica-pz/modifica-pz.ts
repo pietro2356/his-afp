@@ -13,6 +13,7 @@ import { Textarea } from 'primeng/textarea';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { formatDate } from '@angular/common';
 import { PatientManager } from '../../core/Pazienti/patient-manager';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'his-modifica-pz',
@@ -35,8 +36,9 @@ export class ModificaPz {
   patientId = input<string>();
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
+  submitted = false;
   patientReq = httpResource<APIResponse<PazienteDTO>>(
-    () => `http://localhost:3000/admissions/${this.patientId()}`,
+    () => `${environment.apiUrl}/admissions/${this.patientId()}`,
   );
   readonly maxDate = new Date();
   readonly sexOption = [
@@ -133,8 +135,9 @@ export class ModificaPz {
   }
 
   onSubmit() {
+    this.submitted = true;
+
     if (this.paziente.valid) {
-      console.log(this.paziente.value);
       this.patientManager.updatePatientInfo(
         Number(this.patientId()) || -1,
         this.paziente.value.residenza as Pick<PatientAdmission, 'residenza'>,

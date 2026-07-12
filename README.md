@@ -72,7 +72,14 @@ his-afp
 3. Spostarsi nella cartella del progetto: `cd his-afp`
 4. Creare un nuovo branch per le modifiche: `git checkout -b uf15-2026/nome-cognome`
 5. Avviare i container Docker: `docker-compose up -d --build`
-6. Accedere al backend API su `http://localhost:3000`
+6. Accedere ai servizi tramite il gateway e i container frontend:
+   - **Frontend SVI:** `http://localhost:8999`
+   - **Frontend TEST:** `http://localhost:8080`
+   - **Frontend PROD:** `http://localhost`
+   - **API backend diretta:** `http://localhost:3000`
+   - **API gateway:** `http://localhost/api/<endpoint>`
+
+> Nota: il file `backend/.env` è locale e viene ignorato da `.gitignore`. Usa `backend/.env` solo per configurazioni di sviluppo e non committarlo.
 
 # Avvio dei servizi
 
@@ -100,8 +107,14 @@ docker-compose up -d --build --no-deps backend
 
 # Accessi
 
-- **Backend API:** `http://localhost:3000`
+- **Frontend SVI:** `http://localhost:8999`
+- **Frontend TEST:** `http://localhost:8080`
+- **Frontend PROD:** `http://localhost`
+- **Backend API diretta:** `http://localhost:3000`
+- **Backend API via gateway:** `http://localhost/api/<endpoint>`
 - **Database PostgreSQL:** `localhost:5432` (user: `sio_user`, password: `sio_password`, database: `sio_db`)
+- **Credenziali di esempio:** `medico/1234`, `infermiere/1234`, `amministrativo/1234`
+- **Autenticazione backend:** abilitata in `docker-compose.yml` (`AUTH_ENABLED=true`).
 
 # Test delle API
 
