@@ -31,6 +31,7 @@ export class AccettazionePz {
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PatientManager);
 
+  submitted = false;
   readonly maxDate = new Date();
   readonly sexOption = [
     {
@@ -79,8 +80,9 @@ export class AccettazionePz {
     }
   }
   onSubmit() {
+    this.submitted = true;
+
     if (this.paziente.valid) {
-      console.log(this.paziente.value);
       this.patientManager.admitPatient(this.paziente.value as PatientAdmission);
     } else {
       this.paziente.markAllAsTouched();

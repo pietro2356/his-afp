@@ -244,6 +244,12 @@
       </div>
     </p-fieldset>
   </div>
+  @if (submitted && paziente.invalid) {
+    <p-message severity="warn" variant="simple">
+      Compila tutti i campi obbligatori prima di inviare la richiesta.
+    </p-message>
+  }
+
   <div class="flex flex-row gap-4 pt-3">
     <p-button
       label="Invia"
