@@ -228,6 +228,7 @@ export const retrieveDischargedAdmissionsFn = catchAsync(async (req, res) => {
         SELECT a.braccialetto,
                p.nome,
                p.cognome,
+               a.stato          AS "stato",
                a.data_ora_ingresso   AS "dataOraIngresso",
                a.data_ora_dimissione AS "dataOraDimissione"
         FROM admissions a

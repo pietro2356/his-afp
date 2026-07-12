@@ -8,7 +8,7 @@ export const routes: Routes = [
   {
     path: 'accettazione-pz',
     loadComponent: () =>
-      import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),
+      import('./features/accettazione-pz/accettazione-container').then((m) => m.AccettazioneContainer),
   },
   // {
   //   path: 'modifica-pz',
@@ -23,6 +23,16 @@ export const routes: Routes = [
     path: 'stato-servizi',
     loadComponent: () =>
       import('./features/stato-servizi/stato-servizi').then((m) => m.StatoServizi),
+  },
+  {
+    path: 'gestione-staff',
+    loadComponent: () =>
+      import('./features/gestione-staff/gestione-staff').then((m) => m.GestioneStaffComponent),
+  },
+  {
+    path: 'monitor-dimessi',
+    loadComponent: () =>
+      import('./features/monitor-dimessi/monitor-dimessi').then((m) => m.MonitorDimessi),
   },
   {
     path: '',

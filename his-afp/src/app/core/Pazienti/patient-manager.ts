@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
-import { HttpClient } from '@angular/common/http';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO, PatientSearchResult } from './Pazienti.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
@@ -13,7 +14,8 @@ export class PatientManager {
   #http = inject(HttpClient);
   readonly #router = inject(Router);
   #listaPZ = signal<Paziente[]>([]);
-  #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
+  #listaPZFiltered = signal<Paziente[]>([]);
+  #filterText = signal<string>('');
   listaPZ = this.#listaPZFiltered.asReadonly();
 
   // constructor() {
@@ -39,6 +41,7 @@ export class PatientManager {
       next: (res) => {
         const pz = res.data.map((p) => this.mapPazienteDTOToPaziente(p));
         this.#listaPZ.set(pz);
+        this.#applyFilter();
       },
       error: (err) => {
         console.error('Errore durante il fetch dei pazienti:', err);
@@ -72,6 +75,29 @@ export class PatientManager {
       });
   }
 
+  public searchPatients(params: {
+    cf?: string;
+    nome?: string;
+    cognome?: string;
+    dataNascita?: string;
+  }): Observable<APIResponse<PatientSearchResult[]>> {
+    const httpParams = new HttpParams({ fromObject: this.#cleanParams(params) });
+    return this.#http.get<APIResponse<PatientSearchResult[]>>(`${environment.apiUrl}/patients/search`, {
+      params: httpParams,
+    });
+  }
+
+  #cleanParams(params: Record<string, string | undefined>): Record<string, string> {
+    const cleaned: Record<string, string> = {};
+    for (const key of Object.keys(params)) {
+      const value = params[key];
+      if (value !== undefined && value !== null && value !== '') {
+        cleaned[key] = value;
+      }
+    }
+    return cleaned;
+  }
+
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {
     return {
       id: pz.id.toString(),
@@ -99,10 +125,19 @@ export class PatientManager {
   }
 
   public filterByName(name: string) {
-    const filtered = this.#listaPZ().filter((p) => {
-      const fullName = `${p.nome} ${p.cognome}`.toLowerCase();
-      return fullName.includes(name.toLowerCase());
-    });
+    this.#filterText.set(name);
+    this.#applyFilter();
+  }
+
+  #applyFilter() {
+    const term = this.#filterText().trim().toLowerCase();
+    const filtered = term
+      ? this.#listaPZ().filter((p) => {
+          const fullName = `${p.nome} ${p.cognome}`.toLowerCase();
+          return fullName.includes(term);
+        })
+      : this.#listaPZ();
+
     this.#listaPZFiltered.set(filtered);
   }
 }

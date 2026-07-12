@@ -1,7 +1,8 @@
 # 📘 SIO Backend - API Reference Manual
 
 - **Versione:** 1.0.2
-- **Base URL:** `http://localhost:3000`
+- **Base URL backend diretta:** `http://localhost:3000`
+- **Base URL gateway:** `http://localhost/api` (es. `http://localhost/api/health`)
 - **Protocollo:** HTTP/1.1 REST
 - **Encoding:** JSON (`application/json`)
 
