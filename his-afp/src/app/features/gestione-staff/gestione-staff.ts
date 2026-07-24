@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service';
 import { usernameAvailableValidator } from '../../core/validators/username.validator';
-import { UserRole } from '../../core/models/user.model';
+import { User, UserRole } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-gestione-staff',
@@ -57,5 +57,13 @@ export class GestioneStaffComponent implements OnInit {
     const newRole = selectElement.value as UserRole;
 
     this.userService.updateRole(userId, newRole).subscribe();
+  }
+
+  trackById(index: number, item: User): number {
+    return item.id!;
+  }
+
+  trackByRole(index: number, item: UserRole): string {
+    return item;
   }
 }
