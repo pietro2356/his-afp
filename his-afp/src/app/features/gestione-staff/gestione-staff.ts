@@ -60,7 +60,7 @@ export class GestioneStaffComponent implements OnInit {
   }
 
   trackById(index: number, item: User): number {
-    return item.id!;
+    return item.id ?? index;
   }
 
   trackByRole(index: number, item: UserRole): string {

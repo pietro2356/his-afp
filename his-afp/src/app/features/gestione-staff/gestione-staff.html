@@ -79,12 +79,12 @@
             </span>
           </td>
           <td class="p-3 text-sm">
-            <select 
-              [value]="user.role" 
-              (change)="onRoleChange(user.id!, $event)"
-              class="border rounded px-2 py-1 text-xs bg-white focus:ring-1 focus:ring-blue-500">
-<option *ngFor="let role of roles; trackBy: trackByRole" [value]="role">{{ role }}</option>
-            </select>
+        <select 
+            [value]="user.role" 
+            (change)="user.id !== undefined && onRoleChange(user.id, $event)"
+             class="border rounded px-2 py-1 text-xs bg-white focus:ring-1 focus:ring-blue-500">
+            <option *ngFor="let role of roles; trackBy: trackByRole" [value]="role">{{ role }}</option>
+        </select>
           </td>
         </tr>
       </tbody>
